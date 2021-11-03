@@ -21,45 +21,58 @@ class ChessPiecePrototype(ABC):
         pass
 
 # define differences for each type of figure
+# symbol dependent on colour of player
 
 class Pawn(ChessPiecePrototype):
-    def __init__(this, player, symbol):
+    def __init__(this, player):
         super().__init__()
+        this.player = player
+        this.symbol = "image"
 
     def clone(this):
         return copy.deepcopy(this)
 
 class Bishop(ChessPiecePrototype):
-    def __init__(this, player, symbol):
+    def __init__(this, player):
         super().__init__()
+        this.player = player
+        this.symbol = "image"
 
     def clone(this):
         return copy.deepcopy(this)
 
 class Knight(ChessPiecePrototype):
-    def __init__(this, player, symbol):
+    def __init__(this, player):
         super().__init__()
+        this.player = player
+        this.symbol = "image"
 
     def clone(this):
         return copy.deepcopy(this)
 
 class Rook(ChessPiecePrototype):
-    def __init__(this, player, symbol):
+    def __init__(this, player):
         super().__init__()
+        this.player = player
+        this.symbol = "image"
 
     def clone(this):
         return copy.deepcopy(this)
 
 class Queen(ChessPiecePrototype):
-    def __init__(this, player, symbol):
+    def __init__(this, player):
         super().__init__()
+        this.player = player
+        this.symbol = "image"
 
     def clone(this):
         return copy.deepcopy(this)
 
 class King(ChessPiecePrototype):
-    def __init__(this, player, symbol):
+    def __init__(this, player):
         super().__init__()
+        this.player = player
+        this.symbol = "image"
 
     def clone(this):
         return copy.deepcopy(this)

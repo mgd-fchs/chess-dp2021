@@ -6,4 +6,5 @@ class Player ():
         pass
 
 # TODO: check that only one instance of each color can exist!
-# TODO: set up context and allow each player a state.
+# TODO: set up context and allow each player a state
+# https://auth0.com/blog/state-pattern-in-python/
