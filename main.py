@@ -1,23 +1,32 @@
 # imports
-from ChessBoard import ChessBoard
-from Player import Player
+from Game import Game
 
 def main():
-    # simple testing calls, to be replaced 
+    newGame = Game()
 
-    whitePlayer = Player("white")
-    blackPlayer = Player("black")
+    # simple testing calls, to be deleted
+    originSpot = newGame.board[0][1]
+    destinationSpot = newGame.board[0][2]
 
-    chessBoard = ChessBoard().setUp(whitePlayer, blackPlayer)
+    # valid move
+    newGame.executeMove(originSpot, destinationSpot)
+    """ expected output: 
+        This is a valid move!
+        Moving piece x to coordinates
+    """
 
-    # chessBoard[5][7].getOccupant()
-    # chessBoard[5][7].getOccupant().move(chessBoard[5,7],chessBoard[4][4])
+    # valid move but wrong player
+    newGame.executeMove(destinationSpot, newGame.board[0][3])
+    """ expected output: 
+        This is a valid move!
+        Cannot make move, it's not your turn
+    """
 
-    whitePlayer.makeMove(chessBoard[0][1], chessBoard[0][2])
-    blackPlayer.makeMove(chessBoard[2][5], chessBoard[2][4])
-    blackPlayer.makeMove(chessBoard[2][5], chessBoard[2][4])
-    blackPlayer.makeMove(chessBoard[2][5], chessBoard[2][4])
-    whitePlayer.makeMove(chessBoard[0][2], chessBoard[0][3])
+    # correct player but invalid move
+    newGame.executeMove(newGame.board[0][6], newGame.board[0][7])
+    """ expected output: 
+        Please select a valid move!
+    """
 
 if __name__ == "__main__":
     main()

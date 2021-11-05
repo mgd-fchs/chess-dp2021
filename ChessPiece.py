@@ -1,6 +1,7 @@
 # imports
 from abc import ABC, abstractmethod
 import copy
+import Strategy
 from Strategy import MovementStrategy
 
 # create the object at runtiume by copying the prototype instance
@@ -10,12 +11,11 @@ class ChessPiecePrototype(ABC):
     def __init__(this):
         this.player = None
         this.symbol = None
+        this.movementStrategy = MovementStrategy()
+        this.color = None
 
-    def move(this, originSpot, destinationSpot):
-        print("Moved " + this.__class__.__name__ + " to: " + str(destinationSpot.getPosition()))
-        if (MovementStrategy.validateMove()):
-            originSpot.freeField()
-            destinationSpot.occupyField(this)  # TODO: handle two figures on same spot! What if validation is wrong? -> go back to state
+    def setMovementStrategy(this, pieceStrategy):
+        this.movementStrategy = pieceStrategy
 
     @abstractmethod
     def clone(this):
@@ -28,7 +28,10 @@ class Pawn(ChessPiecePrototype):
     def __init__(this, player):
         super().__init__()
         this.player = player
+        this.color = player.color
         this.symbol = "someImagePath"
+        
+        this.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonalForward])
 
     def clone(this):
         return copy.deepcopy(this)
@@ -37,7 +40,10 @@ class Bishop(ChessPiecePrototype):
     def __init__(this, player):
         super().__init__()
         this.player = player
+        this.color = player.color
         this.symbol = "someImagePath"
+
+        this.setMovementStrategy([Strategy.MultipleDiagonal])
 
     def clone(this):
         return copy.deepcopy(this)
@@ -46,7 +52,10 @@ class Knight(ChessPiecePrototype):
     def __init__(this, player):
         super().__init__()
         this.player = player
+        this.color = player.color
         this.symbol = "someImagePath"
+
+        this.setMovementStrategy([Strategy.TJump])
 
     def clone(this):
         return copy.deepcopy(this)
@@ -56,6 +65,8 @@ class Rook(ChessPiecePrototype):
         super().__init__()
         this.player = player
         this.symbol = "someImagePath"
+        
+        this.setMovementStrategy([Strategy.MultipleStraight])
 
     def clone(this):
         return copy.deepcopy(this)
@@ -64,7 +75,10 @@ class Queen(ChessPiecePrototype):
     def __init__(this, player):
         super().__init__()
         this.player = player
+        this.color = player.color
         this.symbol = "someImagePath"
+
+        this.setMovementStrategy([Strategy.MultipleStraight, Strategy.MultipleDiagonal])
 
     def clone(this):
         return copy.deepcopy(this)
@@ -73,9 +87,10 @@ class King(ChessPiecePrototype):
     def __init__(this, player):
         super().__init__()
         this.player = player
+        this.color = player.color
         this.symbol = "someImagePath"
+
+        this.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonal])
 
     def clone(this):
         return copy.deepcopy(this)
-
-# TODO: implement strategy for every call to move()

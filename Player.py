@@ -1,15 +1,14 @@
 # imports
 from abc import ABC, abstractmethod
-from ChessBoard import BoardSpot
-import ChessPiece
 
 class Player ():
     _instances = []
+
     def __init__(this, color):
         if len(this._instances) > 2:
             raise Warning("More than 2 player instances created but only 2 can play!")
 
-        _playerColor = color
+        this.color = color
 
         if color == "white":
             this.setState(ActiveState())
@@ -46,12 +45,15 @@ class State(ABC):
         pass
 
 class ActiveState(State):
-    def makeMove(this, originField, destinationField):
-        print("Moving pieces")
-        # Inactivate current player after making a move
-        this.player.setState(InactiveState())
+    def makeMove(this, originField, destinationField):         
+        movingPiece = originField.getOccupant()
 
-        # TODO: Move piece
+        print("Moving piece " + str(originField.getOccupant()) + " to " + str(destinationField.getPosition()))
+
+        originField.freeField()
+        destinationField.occupyField(movingPiece)
+
+        this.player.setState(InactiveState())
 
         # Activate other player
         playerInstance = Player._instances.index(this.player)

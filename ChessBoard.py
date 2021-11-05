@@ -41,7 +41,6 @@ class ChessBoard:
 
         return this.positions
 
-
 class BoardSpot():
     def __init__(this, xPosition, yPosition):
         this._xPos = xPosition
