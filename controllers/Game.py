@@ -28,7 +28,7 @@ class Game():
 
         valid = False
         for strategy in piece.movementStrategy:
-            valid = strategy.validateMove(originSpot, destinationSpot)
+            valid = strategy.validateMove(this, originSpot, destinationSpot)
             if valid == True:
                 print("This is a valid move!")
                 break

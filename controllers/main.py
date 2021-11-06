@@ -27,6 +27,13 @@ def main():
     """ expected output: 
         Please select a valid move!
     """
+    
+    # correct player but invalid move (other piece in the way)
+    newGame.executeMove(newGame.board[0][0], newGame.board[0][3])
+    """ expected output: 
+        Please select a valid move!
+    """
+    
 
 if __name__ == "__main__":
     main()
