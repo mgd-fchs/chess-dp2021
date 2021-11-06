@@ -2,6 +2,8 @@
 import controllers.ChessPiece
 
 # Chess board class to set up initial state of the board and generate playable positions
+from controllers import ChessPiece
+
 
 class ChessBoard:
     positions = []
