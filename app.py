@@ -9,16 +9,7 @@ app.config.from_object('config')
 
 db.init_app(app)
 migrate = Migrate(app, db)
-app.register_blueprint(chess_bp, url_prefix='/chess')
-
-
-@app.route('/')
-def index():
-    pos = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
-    user = "Hero"
-    mylist = [pos, user]
-    return render_template('index.html', mylist=mylist)
-
+app.register_blueprint(chess_bp, url_prefix='/')
 
 if __name__ == '__main__':
     app.debug = True

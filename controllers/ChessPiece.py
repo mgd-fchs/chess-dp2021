@@ -1,7 +1,7 @@
 # imports
 from abc import ABC, abstractmethod
 import copy
-import controllers.Strategy
+import controllers.Strategy as Strategy
 from controllers.Strategy import MovementStrategy
 
 # create the object at runtiume by copying the prototype instance

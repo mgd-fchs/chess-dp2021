@@ -1,5 +1,5 @@
 import sys
-from flask import render_template, redirect, url_for, request, abort
+from flask import render_template, redirect, url_for, request, abort, jsonify
 
 from models.Chess import Chess
 
@@ -36,13 +36,27 @@ def main():
         Please select a valid move!
     """
 
-# TODO
-def index():
-    main()
 
 # TODO
-def store():
-    ...
+def index():
+    print("index...")
+    # main()
+    print("starting...")
+    position = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
+    color = "white"
+    state = "play"
+    return render_template('index.html', state=state, position=position, color=color)
+
+
+# TODO
+def start_new_game():
+    print("starting...")
+    position = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
+    color = "white"
+    state = "play"
+    return render_template('index.html', state=state, position=position, color=color)
+
+
 
 # TODO Change
 # def show(userId):
