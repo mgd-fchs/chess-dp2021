@@ -1,7 +1,8 @@
 # imports
 from abc import ABC, abstractmethod
 
-class Player ():
+
+class Player():
     _instances = []
 
     def __init__(this, color):
@@ -14,18 +15,18 @@ class Player ():
             this.setState(ActiveState())
         elif color == "black":
             this.setState(InactiveState())
-        else: 
+        else:
             raise ValueError("Player color must be black or white, but was " + str(color))
-        
+
         this._instances.append(this)
-    
+
     def setState(this, state):
         this._state = state
         this._state.player = this
 
     def makeMove(this, originField, destinationField):
-        this._state.makeMove(originField, destinationField) 
-    
+        this._state.makeMove(originField, destinationField)
+
 
 class State(ABC):
     @property
@@ -44,8 +45,9 @@ class State(ABC):
     def giveUp(this):
         pass
 
+
 class ActiveState(State):
-    def makeMove(this, originField, destinationField):         
+    def makeMove(this, originField, destinationField):
         movingPiece = originField.getOccupant()
 
         print("Moving piece " + str(originField.getOccupant()) + " to " + str(destinationField.getPosition()))
@@ -65,6 +67,7 @@ class ActiveState(State):
     def giveUp(this):
         print("Giving up")
         # set winning state to other player
+
 
 class InactiveState(State):
     def makeMove(this, originField, destinationField):

@@ -1,7 +1,7 @@
 # Composite class
 
-from Player import Player
-from ChessBoard import ChessBoard
+from controllers.Player import Player
+from controllers.ChessBoard import ChessBoard
 
 class Game():
 

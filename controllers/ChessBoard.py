@@ -1,5 +1,5 @@
 # imports
-import ChessPiece
+import controllers.ChessPiece
 
 # Chess board class to set up initial state of the board and generate playable positions
 

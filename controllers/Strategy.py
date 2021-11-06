@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
 
+
 class MovementStrategy(ABC):
     def validateMove(originSpot, destinationSpot):
         pass
+
 
 class SingleForward(MovementStrategy):
     # implemented by pawn
@@ -11,11 +13,11 @@ class SingleForward(MovementStrategy):
     def validateMove(originSpot, destinationSpot):
         validMove = False
         if originSpot.getOccupant().color == "white":
-            if originSpot.getPosition()[1] == destinationSpot.getPosition()[1]-1:
+            if originSpot.getPosition()[1] == destinationSpot.getPosition()[1] - 1:
                 if originSpot.getPosition()[0] == destinationSpot.getPosition()[0]:
                     validMove = True
         elif originSpot.getOccupant().color == "black":
-            if originSpot.getPosition()[1] == destinationSpot.getPosition()[1]+1:
+            if originSpot.getPosition()[1] == destinationSpot.getPosition()[1] + 1:
                 if originSpot.getPosition()[0] == destinationSpot.getPosition()[0]:
                     validMove = True
 
@@ -32,8 +34,9 @@ class MultipleStraight(MovementStrategy):
             validMove = True
         elif originSpot.getPosition()[0] == destinationSpot.getPosition()[0]:
             validMove = True
-        
+
         return validMove
+
 
 class MultipleDiagonal(MovementStrategy):
     # implemented by bishop, queen
@@ -46,8 +49,9 @@ class MultipleDiagonal(MovementStrategy):
         validMove = False
         if xDiff == yDiff:
             validMove = True
-        
+
         return validMove
+
 
 class SingleDiagonal(MovementStrategy):
     # implemented by king
@@ -60,8 +64,9 @@ class SingleDiagonal(MovementStrategy):
         validMove = False
         if (xDiff == 1 and yDiff == 1):
             validMove = True
-        
+
         return validMove
+
 
 class SingleDiagonalForward(MovementStrategy):
     # implemented by pawn
@@ -79,8 +84,9 @@ class SingleDiagonalForward(MovementStrategy):
                     validMove = True
                 elif color == "black" and yDiff == 1:
                     validMove = True
-        
+
         return validMove
+
 
 class TJump(MovementStrategy):
     # implemented by rook, king
@@ -98,5 +104,5 @@ class TJump(MovementStrategy):
         elif yDiff == 2:
             if xDiff == 1:
                 validMove = True
-        
+
         return validMove

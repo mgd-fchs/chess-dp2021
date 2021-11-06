@@ -1,8 +1,8 @@
 # imports
 from abc import ABC, abstractmethod
 import copy
-import Strategy
-from Strategy import MovementStrategy
+import controllers.Strategy
+from controllers.Strategy import MovementStrategy
 
 # create the object at runtiume by copying the prototype instance
 # common interface supports object cloning to decouple the code from the class of the method
