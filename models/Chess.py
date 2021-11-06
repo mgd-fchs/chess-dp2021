@@ -19,3 +19,4 @@ class Chess(db.Model):
             # 'state': self.state,
             # 'address': self.address
         }
+

@@ -4,7 +4,7 @@ import copy
 import controllers.Strategy as Strategy
 from controllers.Strategy import MovementStrategy
 
-# create the object at runtiume by copying the prototype instance
+# create the object at runtime by copying the prototype instance
 # common interface supports object cloning to decouple the code from the class of the method
 
 class ChessPiecePrototype(ABC):

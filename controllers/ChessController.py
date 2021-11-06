@@ -1,13 +1,15 @@
 import sys
-from flask import render_template, redirect, url_for, request, abort, jsonify
+from flask import render_template, redirect, url_for, request, abort, jsonify, app, session
+from flask import g
 
+from controllers.Player import Player, ActiveState
 from models.Chess import Chess
 
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
-# imports
 from controllers.Game import Game
+
 
 def main():
     newGame = Game()
@@ -40,30 +42,75 @@ def main():
 # TODO
 def index():
     print("index...")
-    # main()
-    print("starting...")
-    position = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
-    color = "white"
-    state = "play"
+    game = Game()
+    position = 'start'
+    color = game.getActivePlayer().getColor()
+    state = game.gameState.name
     return render_template('index.html', state=state, position=position, color=color)
 
 
 # TODO
 def start_new_game():
     print("starting...")
+    game = Game()
+    position = 'start'
+    color = game.getActivePlayer().getColor()
+    state = game.gameState.name
+    return render_template('index.html', state=state, position=position, color=color)
+
+
+def load_game():
+    print("loading...")
+    position = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
+    color = "white"
+    state = "end"
+    return render_template('index.html', state=state, position=position, color=color)
+
+
+def save_game():
+    print("saving...")
     position = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
     color = "white"
     state = "play"
     return render_template('index.html', state=state, position=position, color=color)
 
 
+def undo():
+    print("init undo...")
+    position = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
+    color = "white"
+    state = "play"
+    return render_template('index.html', state=state, position=position, color=color)
 
-# TODO Change
-# def show(userId):
-#    ...
 
-# def update(userId):
-#    ...
+def redo():
+    print("init redo...")
+    position = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
+    color = "white"
+    state = "play"
+    return render_template('index.html', state=state, position=position, color=color)
 
-# def delete(userId):
-#    ...
+
+def show_history():
+    print("showing history...")
+    position = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
+    color = "white"
+    state = "play"
+    return render_template('index.html', state=state, position=position, color=color)
+
+
+def move():
+    print("moving...")
+    position = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
+    color = "white"
+    state = "play"
+    return render_template('index.html', state=state, position=position, color=color)
+
+
+def give_up():
+    print("moving...")
+    position = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
+    color = "white"
+    state = "play"
+    return render_template('index.html', state=state, position=position, color=color)
+

@@ -9,3 +9,7 @@ body{
 #myBoard{
     width: 600px;
 }
+
+.win {
+    text-transform: uppercase;
+}

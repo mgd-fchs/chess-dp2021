@@ -1,4 +1,5 @@
 # imports
+import json
 from abc import ABC, abstractmethod
 
 
@@ -6,6 +7,7 @@ class Player():
     _instances = []
 
     def __init__(this, color):
+        print(len(this._instances))
         if len(this._instances) > 2:
             raise Warning("More than 2 player instances created but only 2 can play!")
 
@@ -26,6 +28,13 @@ class Player():
 
     def makeMove(this, originField, destinationField):
         this._state.makeMove(originField, destinationField)
+
+    def getState(self):
+        return self._state
+
+    def getColor(self):
+        return self.color
+
 
 
 class State(ABC):

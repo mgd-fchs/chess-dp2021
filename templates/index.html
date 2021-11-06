@@ -23,15 +23,18 @@
     </form>
     <!-- TODO disable this button if no game can be loaded -->
     <form action="/load_game" method="post">
-        <button class="btn btn-outline-primary" name="start_new_game" type="submit">Load Game</button>
+        <button class="btn btn-outline-primary" name="load_game" type="submit">Load Game</button>
     </form>
     <form action="/save_game" method="post">
-        <button class="btn btn-outline-primary" name="start_new_game" type="submit">Save Game</button>
+        <button class="btn btn-outline-primary" name="save_game" type="submit">Save Game</button>
     </form>
 </div>
 <p class="fs-3 text">
-    {% if color %}
+    {% if color and state != "END" %}
     It's <strong>{{color}}'s</strong> turn
+    {% endif %}
+    {% if state == "END" %}
+        <h2><span class="win"><strong>{{color}}'s</strong> WINS!</span></h2>
     {% endif %}
 </p>
 
@@ -50,10 +53,16 @@
 </div>
     <form action="/move" method="post" class="d-flex p-2 bd-highlight gap-2">
         <div class="form-floating">
-            <input type="text" class="form-control" id="movingInput" placeholder="Your Move">
+            <input type="text" class="form-control" id="movingInput" placeholder="Your Move"
+                {% if state == 'END' %} disabled {% endif %} >
             <label for="movingInput">Your Move</label>
         </div>
-        <button class="btn btn-primary" name="do_move" type="submit">Move</button>
+        <button class="btn btn-primary" name="do_move" type="submit"
+            {% if state == 'END' %} disabled {% endif %} >Move</button>
+    </form>
+    <form action="/give_up" method="post">
+        <button class="btn btn-outline-secondary" name="give_up" type="submit"
+        {% if state == 'END' %} disabled {% endif %}><i class="far fa-flag"></i></button>
     </form>
 
 

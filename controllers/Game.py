@@ -3,19 +3,29 @@
 from controllers.Player import Player
 from controllers.ChessBoard import ChessBoard
 
+from enum import Enum
+
+
+class State(Enum):
+    INIT = 1
+    PLAY = 2
+    END = 3
+
+
 class Game():
 
     def __init__(this):
         # instantiate players
         this.whitePlayer = Player("white")
         this.blackPlayer = Player("black")
+        this.activePlayer = this.whitePlayer
+        this.gameState = State.INIT
 
         # instantiate board
         this.board = ChessBoard().setUp(this.whitePlayer, this.blackPlayer)
-
+        this.gameState = State.PLAY
         # TODO: Instantiate other components: e.g. History
-  
-  
+
     def executeMove(this, originSpot, destinationSpot):
         # TODO: Link to calls from GUI (?)
         piece = originSpot.getOccupant()
@@ -23,7 +33,7 @@ class Game():
         if not piece:
             print("Cannot move piece from empty spot")
             return
-        
+
         player = piece.player
 
         valid = False
@@ -38,6 +48,7 @@ class Game():
             return
 
         player.makeMove(originSpot, destinationSpot)
+        this.togglePlayer()
 
         # TODO: Ensure there is no other figure in the way -> Should be in Strategy.validate()
         # TODO: Check player state before validity of move (also possibly switch move execution from Player to Game)
@@ -47,6 +58,7 @@ class Game():
     def end(this):
         # to be called when a player wins or gives up
         # ends the application
+        this.gameState = State.END
         pass
 
     def undo(this):
@@ -64,3 +76,13 @@ class Game():
     def replay(this):
         # TODO
         pass
+
+    def togglePlayer(this):
+        if this.activePlayer == this.whitePlayer:
+            this.activePlayer = this.blackPlayer
+        else:
+            this.activePlayer = this.whitePlayer
+
+    def getActivePlayer(self):
+        return self.activePlayer
+
