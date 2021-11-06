@@ -7,3 +7,6 @@ This project is an implementation of a chess game as a python web app created fo
 - run `flask db migrate` - it will detect the model changes with an upgrade and downgrade logic set up.
 - run `flask db upgrade` - it will apply the model changes you have implemented.
 - run `flask db downgrade` - if something goes wrong, you can use this command to unapply changes you have done on your model file.
+
+## Run the app
+Run app.py and then open http://127.0.0.1:5000/
