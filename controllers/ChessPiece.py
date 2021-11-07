@@ -17,6 +17,14 @@ class ChessPiecePrototype(ABC):
     def setMovementStrategy(this, pieceStrategy):
         this.movementStrategy = pieceStrategy
 
+    def getSymbol(this):
+        if this.color == None:
+            print("color error")
+        if this.color == "white":
+            return this.symbol.upper()
+        else:
+            return this.symbol
+
     @abstractmethod
     def clone(this):
         pass
@@ -29,7 +37,7 @@ class Pawn(ChessPiecePrototype):
         super().__init__()
         this.player = player
         this.color = player.color
-        this.symbol = "someImagePath"
+        this.symbol = "p"
         
         this.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonalForward])
 
@@ -41,7 +49,7 @@ class Bishop(ChessPiecePrototype):
         super().__init__()
         this.player = player
         this.color = player.color
-        this.symbol = "someImagePath"
+        this.symbol = "b"
 
         this.setMovementStrategy([Strategy.MultipleDiagonal])
 
@@ -53,7 +61,7 @@ class Knight(ChessPiecePrototype):
         super().__init__()
         this.player = player
         this.color = player.color
-        this.symbol = "someImagePath"
+        this.symbol = "n"
 
         this.setMovementStrategy([Strategy.TJump])
 
@@ -64,7 +72,8 @@ class Rook(ChessPiecePrototype):
     def __init__(this, player):
         super().__init__()
         this.player = player
-        this.symbol = "someImagePath"
+        this.color = player.color
+        this.symbol = "r"
         
         this.setMovementStrategy([Strategy.MultipleStraight])
 
@@ -76,7 +85,7 @@ class Queen(ChessPiecePrototype):
         super().__init__()
         this.player = player
         this.color = player.color
-        this.symbol = "someImagePath"
+        this.symbol = "q"
 
         this.setMovementStrategy([Strategy.MultipleStraight, Strategy.MultipleDiagonal])
 
@@ -88,7 +97,7 @@ class King(ChessPiecePrototype):
         super().__init__()
         this.player = player
         this.color = player.color
-        this.symbol = "someImagePath"
+        this.symbol = "k"
 
         this.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonal])
 

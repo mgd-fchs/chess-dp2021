@@ -53,7 +53,7 @@
 </div>
     <form action="/move" method="post" class="d-flex p-2 bd-highlight gap-2">
         <div class="form-floating">
-            <input type="text" class="form-control" id="movingInput" placeholder="Your Move"
+            <input type="text" class="form-control" id="movingInput" name="movingInput" placeholder="Your Move"
                 {% if state == 'END' %} disabled {% endif %} >
             <label for="movingInput">Your Move</label>
         </div>
@@ -75,8 +75,8 @@
         <h2> Input rules: </h2>
         <h3> The board</h3>
         <p>
-            Lines: a-h <br>
-            Rows: (1-8)
+            Rows: a-h <br>
+            Lines: (1-8)
         </p>
         <h3>The pieces</h3>
         <p>
@@ -118,6 +118,7 @@
 
 <script>
     let pos = '{{ position }}';
+    console.log(pos);
     let board = Chessboard('myBoard', pos);
 </script>
 </body>
