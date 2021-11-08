@@ -1,11 +1,12 @@
 # Composite class
 import re
 
-from controllers.Player import Player
+from controllers.Player import Player, ActiveState, InactiveState
 from controllers.ChessBoard import ChessBoard
+from models.Chess import Chess, db
+
 
 from enum import Enum
-
 
 class State(Enum):
     INIT = 1
@@ -19,6 +20,7 @@ class Game():
         # instantiate players
         this.whitePlayer = Player("white")
         this.blackPlayer = Player("black")
+
         this.activePlayer = this.whitePlayer
         this.gameState = State.INIT
         # example fen string: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
@@ -42,9 +44,11 @@ class Game():
 
         active_player = params[1]
         if re.match("^[w]$", active_player):
-            self.activePlayer = self.whitePlayer
+            self.whitePlayer.setState(ActiveState())
+            self.blackPlayer.setState(InactiveState())
         elif re.match("^[b]$", active_player):
-            self.activePlayer = self.blackPlayer
+            self.blackPlayer.setState(ActiveState())
+            self.whitePlayer.setState(InactiveState())
         else:
             return -1
 
@@ -193,7 +197,9 @@ class Game():
 
         player.makeMove(originSpot, destinationSpot)
         this.togglePlayer()
-
+        currentFen = this.getFenString()
+        # store in gameID table:
+        # moveID, currentFen
         # TODO: Replace print statements with proper messages/warnings
 
     def end(this):
@@ -221,8 +227,12 @@ class Game():
     def togglePlayer(this):
         if this.activePlayer == this.whitePlayer:
             this.activePlayer = this.blackPlayer
+            this.blackPlayer.setState(ActiveState())
+            this.whitePlayer.setState(InactiveState())
         else:
             this.activePlayer = this.whitePlayer
+            this.blackPlayer.setState(ActiveState())
+            this.whitePlayer.setState(InactiveState())
 
     def getActivePlayer(self):
         return self.activePlayer

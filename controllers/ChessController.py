@@ -101,6 +101,8 @@ def show_history():
 
 def move():
     print("moving...")
+    # load FEN string from Game.id table at the current moveID
+    # game = Game("")
     game = Game("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
     move = request.form['movingInput']
     game.move(move)

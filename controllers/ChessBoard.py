@@ -49,8 +49,7 @@ class ChessBoard:
                     else:
                         return -1
                     this.positions[7-row_number][7-line_number].occupyField(chess_piece)
-                    print(str(this.positions[7-row_number][7-row_number].getPosition()))
-                    print(str(this.positions[7-row_number][7-row_number].getOccupant()))
+
                 else:
                     return -1
                 row_number += 1

@@ -8,9 +8,6 @@ class Player():
 
     def __init__(this, color):
 
-        # if len(this._instances) > 2:
-            # raise Warning("More than 2 player instances created but only 2 can play!")
-
         this.color = color
 
         if color == "white":
@@ -19,8 +16,6 @@ class Player():
         elif color == "black":
             this.shortColor = "b"
             this.setState(InactiveState())
-        # else:
-            #raise ValueError("Player color must be black or white, but was " + str(color))
 
         this._instances.append(this)
 
