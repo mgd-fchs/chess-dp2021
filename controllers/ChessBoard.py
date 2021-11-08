@@ -48,14 +48,15 @@ class ChessBoard:
                         chess_piece = ChessPiece.Pawn(color)
                     else:
                         return -1
-                    this.positions[7-line_number][7-row_number].occupyField(chess_piece)
+                    this.positions[7-row_number][7-line_number].occupyField(chess_piece)
+                    print(str(this.positions[7-row_number][7-row_number].getPosition()))
+                    print(str(this.positions[7-row_number][7-row_number].getOccupant()))
                 else:
                     return -1
                 row_number += 1
             row_number = 0
             line_number += 1
         return this.positions
-
 
 
 class BoardSpot():

@@ -69,7 +69,9 @@ class Game():
         lineNumber = 0
         rowNumber = 0
         jumpover = 0
-        for line in reversed(self.board):
+
+        # transpose board matrix and traverse it in reversed order
+        for line in reversed(list(map(list, zip(*self.board)))):
             for pos in line:
                 if pos.getOccupant() != None:
                     if jumpover != 0:
@@ -123,15 +125,16 @@ class Game():
 
         # a pawn
         if len(move) == 3:
-            move_from = move.split()[0]
-            move_to = move.split()[1]
-            switch_to = move.split()[2]
+            move_from = move[0]
+            move_to = move[1]
+            switch_to = move[2]
 
         if len(move_from) != 3 or len(move_to) != 3 or move_from[0] != move_to[0]:
             print("wrong input" + str(len(move_from)))
             return
 
         figure = move_from[0]
+
         move_from_line = move_from[2]
         move_from_row = move_from[1]
 
@@ -158,18 +161,17 @@ class Game():
         move_from_row = ord(move_from_row) - 96
 
         # check if the right figure is selected
-        originSpot = self.board[int(move_from_line)-1][int(move_from_row)-1]
+        originSpot = self.board[int(move_from_row)-1][int(move_from_line)-1]
         if originSpot.getOccupant() != None:
             if originSpot.getOccupant().getSymbol() != figure:
                 print("wrong figure selected " + originSpot.getOccupant().getSymbol())
                 return
-        destinationSpot = self.board[int(move_to_line)-1][int(move_to_row)-1]
+        destinationSpot = self.board[int(move_to_row)-1][int(move_to_line)-1]
 
         # execute and check if the move can be done
         self.executeMove(originSpot, destinationSpot)
 
     def executeMove(this, originSpot, destinationSpot):
-        # TODO: Link to calls from GUI (?)
         piece = originSpot.getOccupant()
 
         if not piece:
@@ -192,10 +194,7 @@ class Game():
         player.makeMove(originSpot, destinationSpot)
         this.togglePlayer()
 
-        # TODO: Ensure there is no other figure in the way -> Should be in Strategy.validate()
-        # TODO: Check player state before validity of move (also possibly switch move execution from Player to Game)
-        # TODO: Implement castling (history needed!)
-        # TODO: Replace print statements with prioper messages/warnings
+        # TODO: Replace print statements with proper messages/warnings
 
     def end(this):
         # to be called when a player wins or gives up

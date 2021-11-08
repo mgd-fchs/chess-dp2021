@@ -104,12 +104,6 @@ def move():
     game = Game("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
     move = request.form['movingInput']
     game.move(move)
-    # simple testing calls, to be deleted
-    #originSpot = newGame.board[0][1]
-    #destinationSpot = newGame.board[0][2]
-
-    # valid move
-    #newGame.executeMove(originSpot, destinationSpot)
     position = game.getFenString()
     color = game.getActivePlayer().getColor()
     state = game.gameState.name
