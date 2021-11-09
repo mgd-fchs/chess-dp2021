@@ -56,6 +56,7 @@
             <input type="text" class="form-control" id="movingInput" name="movingInput" placeholder="Your Move"
                 {% if state == 'END' %} disabled {% endif %} >
             <label for="movingInput">Your Move</label>
+            <input type="hidden" name="game_id" value="{{game_id}}">
         </div>
         <button class="btn btn-primary" name="do_move" type="submit"
             {% if state == 'END' %} disabled {% endif %} >Move</button>

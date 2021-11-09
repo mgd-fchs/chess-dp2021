@@ -21,7 +21,7 @@ class Game():
         this.whitePlayer = Player("white")
         this.blackPlayer = Player("black")
 
-        this.activePlayer = this.whitePlayer
+        this.activePlayer = None
         this.gameState = State.INIT
         # example fen string: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
         this.gameString = fen
@@ -46,10 +46,13 @@ class Game():
         if re.match("^[w]$", active_player):
             self.whitePlayer.setState(ActiveState())
             self.blackPlayer.setState(InactiveState())
+            self.activePlayer = self.whitePlayer
         elif re.match("^[b]$", active_player):
             self.blackPlayer.setState(ActiveState())
             self.whitePlayer.setState(InactiveState())
+            self.activePlayer = self.blackPlayer
         else:
+            print("wrong player param")
             return -1
 
         casteling = params[2]
@@ -157,7 +160,7 @@ class Game():
         # check right player
         if re.match("^r|n|b|q|k|p$", figure) and self.activePlayer.shortColor != "b":
             # TODO Error handling
-            print("not right player")
+            print("not right player " + str(self.activePlayer.shortColor) + " " + str(figure))
             return
 
         # transfer row a-h to numbers
@@ -233,6 +236,8 @@ class Game():
             this.activePlayer = this.whitePlayer
             this.blackPlayer.setState(ActiveState())
             this.whitePlayer.setState(InactiveState())
+        print("now its " + this.activePlayer.shortColor + " turn")
+
 
     def getActivePlayer(self):
         return self.activePlayer

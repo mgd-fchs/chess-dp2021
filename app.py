@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.config.from_object('config')
 
 db.init_app(app)
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, render_as_batch=True)
 
 # Routing is outsources with blueprint
 app.register_blueprint(chess_bp, url_prefix='/')

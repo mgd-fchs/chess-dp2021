@@ -1,21 +1,24 @@
+from alembic import op
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
+
+
 # Here comes what we want to save
 class Chess(db.Model):
     __tablename__ = 'chessGame'
 
-    moveID = db.Column(db.Integer, primary_key=True)
-    fenString = db.Column(db.String)
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    fen_String = db.Column(db.String)
+    game_id = db.Column(db.Integer)
+    active_state = db.Column(db.Integer)
 
     @property
     def serialize(self):
         return {
-            'moveID': self.moveID,
-            'FENString': self.fenString
+            'id': self.moveID,
+            'FENString': self.fen_String,
+            'game_id': self.game_id,
+            'active_state': self.active_state
         }
-
-    def __init__(self, moveID, fenString):
-        self.moveID = moveID
-        self.fenString = fenString  
-
