@@ -84,18 +84,53 @@ def start_new_game():
 
 def load_game():
     print("loading...")
-    position = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
-    color = "white"
-    state = "end"
-    return render_template('index.html', state=state, position=position, color=color)
+    game_id = request.form['game_id']
+
+    if not db.engine.has_table('chessGame'):
+        print("Cant load the game")
+        return -1
+
+    game_db = db.session.query(Chess).filter(Chess.game_id == game_id, Chess.saved == 1).limit(1).first()
+    if game_db is None:
+        game_db = db.session.query(Chess).filter(Chess.game_id == game_id, Chess.active_state == 1).limit(1).first()
+    if game_db is None:
+        db.session.commit()
+        print("loading game error")
+        return -1
+    game = Game(game_db.fen_String)
+    db.session.commit()
+
+    position = game.getFenString()
+    color = game.getActivePlayer().getColor()
+    state = game.gameState.name
+    fullmove_number = game.fullmove_number
+
+    return render_template('index.html', state=state, position=position,
+                           color=color, game_id=game_id, fullmove_number=fullmove_number)
 
 
 def save_game():
     print("saving...")
-    position = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
-    color = "white"
-    state = "play"
-    return render_template('index.html', state=state, position=position, color=color)
+    game_id = request.form['game_id']
+
+    game = load_the_game(game_id)
+
+    # Set all other saved states from this game to 0
+    prev_saved = db.session.query(Chess).filter(Chess.game_id == game_id, Chess.saved == 1).all()
+    for p in prev_saved:
+        p.saved = 0
+    db.session.commit()
+
+    # save active state
+    game_db = db.session.query(Chess).filter(Chess.game_id == game_id, Chess.active_state == 1).limit(1).first()
+    game_db.saved = 1
+    db.session.commit()
+
+    position = game.getFenString()
+    color = game.getActivePlayer().getColor()
+    state = game.gameState.name
+    fullmove_number = game.fullmove_number
+    return render_template('index.html', state=state, position=position, color=color, game_id=game_id, fullmove_number=fullmove_number)
 
 
 def undo():
@@ -140,7 +175,7 @@ def move():
     fullmove_number = game.fullmove_number
 
     # set other active game state to 0
-    prev_state = db.session.query(Chess).filter(Chess.game_id == game_id and Chess.active_state == 1).all()
+    prev_state = db.session.query(Chess).filter(Chess.game_id == game_id, Chess.active_state == 1).all()
     for p in prev_state:
         p.active_state = 0
     db.session.commit()

@@ -5,8 +5,8 @@ from controllers.Player import Player, ActiveState, InactiveState
 from controllers.ChessBoard import ChessBoard
 from models.Chess import Chess, db
 
-
 from enum import Enum
+
 
 class State(Enum):
     INIT = 1
@@ -14,7 +14,7 @@ class State(Enum):
     END = 3
 
 
-class Game():
+class Game:
 
     def __init__(this, fen):
         # instantiate players
@@ -124,7 +124,7 @@ class Game():
     def move(self, move):
         # parse move
         if move == "0-0" or move == "0-0-0":
-            #TODO casteling
+            # TODO casteling
             print("TODO casteling")
             return
 
@@ -153,7 +153,7 @@ class Game():
         move_to_line = move_to[2]
         move_to_row = move_to[1]
 
-        if not re.match("^[a-h]$", move_from_row) or\
+        if not re.match("^[a-h]$", move_from_row) or \
                 not re.match("^[1-8]$", move_from_line) or \
                 not re.match("^[a-h]$", move_to_row) or \
                 not re.match("^[1-8]$", move_to_line) or \
@@ -173,12 +173,12 @@ class Game():
         move_from_row = ord(move_from_row) - 96
 
         # check if the right figure is selected
-        originSpot = self.board[int(move_from_row)-1][int(move_from_line)-1]
+        originSpot = self.board[int(move_from_row) - 1][int(move_from_line) - 1]
         if originSpot.getOccupant() != None:
             if originSpot.getOccupant().getSymbol() != figure:
                 print("wrong figure selected " + originSpot.getOccupant().getSymbol())
                 return
-        destinationSpot = self.board[int(move_to_row)-1][int(move_to_line)-1]
+        destinationSpot = self.board[int(move_to_row) - 1][int(move_to_line) - 1]
 
         # execute and check if the move can be done
         self.executeMove(originSpot, destinationSpot)
@@ -244,8 +244,5 @@ class Game():
             this.fullmove_number += 1
         print("now its " + this.activePlayer.shortColor + " turn")
 
-
     def getActivePlayer(self):
         return self.activePlayer
-
-

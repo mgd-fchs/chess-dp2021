@@ -23,14 +23,15 @@
     </form>
     <form action="/load_game" method="post">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" name="game_number" placeholder="Game Number" aria-label="Game Number" aria-describedby="basic-addon2">
+          <input type="text" class="form-control" name="game_id" placeholder="Game Number" aria-label="Game Number" aria-describedby="basic-addon2">
           <div class="input-group-append">
-            <button class="btn btn-outline-primary" type="button">Load Game</button>
+            <button class="btn btn-outline-primary" type="submit">Load Game</button>
           </div>
         </div>
     </form>
     <form action="/save_game" method="post">
         <button class="btn btn-outline-primary" name="save_game" type="submit">Save Game State</button>
+        <input type="hidden" name="game_id" value="{{game_id}}">
     </form>
 </div>
 <p class="fs-3 text">
@@ -49,10 +50,8 @@
     <form action="/undo" method="post">
         <button class="btn btn-outline-secondary" name="undo" type="submit"><i class="fas fa-undo"></i></button>
     </form>
-    <form action="/show_history" method="post">
-        <button class="btn btn-outline-secondary" name="show_history" type="submit"><i class="fas fa-play"></i></button>
-    </form>
     <form action="/redo" method="post">
+        <input type="hidden" name="game_id" value="{{game_id}}">
         <button class="btn btn-outline-secondary" name="redo" type="submit"><i class="fas fa-redo"></i></button>
     </form>
 </div>
