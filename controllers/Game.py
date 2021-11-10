@@ -40,9 +40,6 @@ class Game():
         lines = params[0].split("/")
         if len(lines) != 8:
             return -1
-        print("lines:")
-        for l in lines:
-            print(l)
         self.board = ChessBoard().setPieces(lines, self.whitePlayer, self.blackPlayer)
 
         active_player = params[1]

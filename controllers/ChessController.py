@@ -58,11 +58,17 @@ def load_the_game(game_id):
     if not db.engine.has_table('chessGame'):
         print("Cant load the game")
         return -1
-    game_db = db.session.query(Chess).filter(Chess.game_id == game_id, Chess.active_state == 1).limit(1).first()
+
+    xy = db.session.query(Chess).filter(Chess.game_id == game_id, Chess.active_state == 1).all()
+    for x in xy:
+        print("all game state: id: " + str(x.game_id) + " state: " + str(x.active_state) + " fenstring: " + x.fen_String)
     db.session.commit()
+
+
+    game_db = db.session.query(Chess).filter(Chess.game_id == game_id, Chess.active_state == 1).limit(1).first()
     print("load game state: id: " + str(game_db.game_id) + " state: " + str(game_db.active_state) + " fenstring: " + game_db.fen_String)
     game = Game(game_db.fen_String)
-
+    db.session.commit()
     return game
 
 
@@ -138,8 +144,9 @@ def move():
         db.create_all()
 
     # set other active game state to 0
-    prev_state = db.session.query(Chess).filter(Chess.game_id == game_id and Chess.active_state == 1).first()
-    prev_state.active_state = 0
+    prev_state = db.session.query(Chess).filter(Chess.game_id == game_id and Chess.active_state == 1).all()
+    for p in prev_state:
+        p.active_state = 0
     db.session.commit()
 
     # save active state
