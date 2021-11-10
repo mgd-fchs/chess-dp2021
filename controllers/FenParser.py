@@ -52,7 +52,7 @@ class FenParser():
 
         self.game.halfmove_clock = int(halfmove_clock)
         if int(halfmove_clock) >= 50:
-            self.game.setWinner(active_player)
+            self.game.setWinner(active_player, "fivtyMoves")
 
         fullmove_number = params[5]
         if not re.match("^(0|[1-9][0-9]*)$", fullmove_number):

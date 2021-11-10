@@ -105,8 +105,13 @@ def moving(game_id, moving_input):
     upcoming_moves.delete(synchronize_session=False)
     db.session.commit()
 
-    return game_id, game.getFenString(), game.getActivePlayer().getColor(), game.gameState.name, game.fullmove_number
+    return game_id, game.getFenString(), game.getActivePlayer().getColor(), game.gameState.name, game.fullmove_number, game.winner
 
+def give_up_end(game_id):
+    game = load_the_game(game_id)
+    game.togglePlayer()
+    game.setWinner(game.getActivePlayer().shortColor, "giveUp")
+    return game_id, game.gameState.name, game.getFenString(), game.getActivePlayer().getColor(), game.fullmove_number, game.winner
 
 def redo_move(game_id):
     if not db.engine.has_table('chessGame'):

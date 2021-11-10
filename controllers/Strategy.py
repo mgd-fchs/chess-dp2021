@@ -70,6 +70,7 @@ class DoubleForward(MovementStrategy):
 
 class MultipleStraight(MovementStrategy):
     # implemented by rook, queen
+    # TODO: Rework, queen movement is buggy
 
     # overwrite validateMove() method
     def validateMove(game, originSpot, destinationSpot):
@@ -116,7 +117,8 @@ class MultipleStraight(MovementStrategy):
 
 class MultipleDiagonal(MovementStrategy):
     # implemented by bishop, queen
-
+    # TODO: Rework, queen movement is buggy
+    
     # overwrite validateMove() method
     def validateMove(game, originSpot, destinationSpot):
         validMove = False
@@ -184,6 +186,7 @@ class SingleDiagonalForward(MovementStrategy):
         
         xDiff = abs(originSpot.getPosition()[0] - destinationSpot.getPosition()[0])
         yDiff = originSpot.getPosition()[1] - destinationSpot.getPosition()[1]
+        color = originSpot.getOccupant().color
 
         if xDiff == 1:
             if color == "white" and yDiff == -1:

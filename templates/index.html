@@ -39,7 +39,7 @@
     It's <strong>{{color}}'s</strong> turn
     {% endif %}
     {% if state == "END" %}
-        <h2><span class="win"><strong>{{color}}'s</strong> WINS!</span></h2>
+        <h2><span class="win"><strong>{{winner}}</strong> WINS!</span></h2>
     {% endif %}
 </p>
 <p class="text"> Fullmove number: {{fullmove_number}}</p>
@@ -67,6 +67,7 @@
             {% if state == 'END' %} disabled {% endif %} >Move</button>
     </form>
     <form action="/give_up" method="post">
+		<input type="hidden" name="game_id" value="{{game_id}}">
         <button class="btn btn-outline-secondary" name="give_up" type="submit"
         {% if state == 'END' %} disabled {% endif %}><i class="far fa-flag"></i></button>
     </form>

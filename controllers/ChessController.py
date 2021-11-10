@@ -74,15 +74,15 @@ def move():
     moving_input = request.form['movingInput']
     game_id = request.form['game_id']
 
-    game_id, position, color, state, fullmove_number = moving(game_id, moving_input)
+    game_id, position, color, state, fullmove_number, winner = moving(game_id, moving_input)
 
     return render_template('index.html', state=state, position=position, color=color, game_id=game_id,
-                           fullmove_number=fullmove_number)
+                           fullmove_number=fullmove_number, winner=winner)
 
 
 def give_up():
-    print("give up...")
-    position = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
-    color = "white"
-    state = "play"
-    return render_template('index.html', state=state, position=position, color=color)
+    game_id = request.form['game_id']
+    game_id, state, position, color, fullmove_number, winner = give_up_end(game_id)
+
+    return render_template('index.html', state=state, position=position, color=color, game_id=game_id, 
+                            fullmove_number=fullmove_number, winner=winner )
