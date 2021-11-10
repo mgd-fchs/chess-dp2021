@@ -39,7 +39,7 @@ class Pawn(ChessPiecePrototype):
         this.color = player.color
         this.symbol = "p"
         
-        this.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonalForward])
+        this.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonalForward, Strategy.DoubleForward])
 
     def clone(this):
         return copy.deepcopy(this)

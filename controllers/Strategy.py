@@ -28,6 +28,26 @@ class SingleForward(MovementStrategy):
                 validMove = False
         return validMove
 
+class DoubleForward(MovementStrategy):
+    # implemented by pawn (first move can be double)
+
+    def validateMove(game, originSpot, destinationSpot):
+        validMove = False
+
+        if originSpot.getPosition()[0] != originSpot.getPosition()[0]:
+            validMove = False
+            return validMove
+
+        if originSpot.getOccupant().color == "white":
+            if originSpot.getPosition()[1] == 1:
+                if destinationSpot.getPosition()[1] == 3:
+                    validMove = True
+        else:
+            if originSpot.getPosition()[1] == 6:
+                if destinationSpot.getPosition()[1] == 4:
+                    validMove = True
+
+        return validMove
 
 class MultipleStraight(MovementStrategy):
     # implemented by rook, queen
