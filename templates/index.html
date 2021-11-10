@@ -15,18 +15,22 @@
 </head>
 <body>
 
-<h1 class="mt-5"> Our Chess Game</h1>
+<h1 class="mt-5"> Our Chess Game Nr. {{game_id}}</h1>
 
 <div class="d-flex p-2 bd-highlight gap-2">
     <form action="/new_game" method="post">
         <button class="btn btn-secondary" name="start_new_game" type="submit">New Game</button>
     </form>
-    <!-- TODO disable this button if no game can be loaded -->
     <form action="/load_game" method="post">
-        <button class="btn btn-outline-primary" name="load_game" type="submit">Load Game</button>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" name="game_number" placeholder="Game Number" aria-label="Game Number" aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-outline-primary" type="button">Load Game</button>
+          </div>
+        </div>
     </form>
     <form action="/save_game" method="post">
-        <button class="btn btn-outline-primary" name="save_game" type="submit">Save Game</button>
+        <button class="btn btn-outline-primary" name="save_game" type="submit">Save Game State</button>
     </form>
 </div>
 <p class="fs-3 text">
@@ -37,6 +41,7 @@
         <h2><span class="win"><strong>{{color}}'s</strong> WINS!</span></h2>
     {% endif %}
 </p>
+<p class="text"> Fullmove number: {{fullmove_number}}</p>
 
 
 <div id="myBoard"></div>

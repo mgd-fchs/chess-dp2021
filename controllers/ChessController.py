@@ -59,14 +59,7 @@ def load_the_game(game_id):
         print("Cant load the game")
         return -1
 
-    xy = db.session.query(Chess).filter(Chess.game_id == game_id, Chess.active_state == 1).all()
-    for x in xy:
-        print("all game state: id: " + str(x.game_id) + " state: " + str(x.active_state) + " fenstring: " + x.fen_String)
-    db.session.commit()
-
-
     game_db = db.session.query(Chess).filter(Chess.game_id == game_id, Chess.active_state == 1).limit(1).first()
-    print("load game state: id: " + str(game_db.game_id) + " state: " + str(game_db.active_state) + " fenstring: " + game_db.fen_String)
     game = Game(game_db.fen_String)
     db.session.commit()
     return game
@@ -77,14 +70,16 @@ def index():
     print("index...")
     db.session.rollback()
     game_id, position, color, state = init_new_game()
-    return render_template('index.html', state=state, position=position, color=color, game_id=game_id)
+    fullmove_number = 1
+    return render_template('index.html', state=state, position=position, color=color, game_id=game_id, fullmove_number=fullmove_number)
 
 
 # TODO
 def start_new_game():
     print("starting...")
     game_id, position, color, state = init_new_game()
-    return render_template('index.html', state=state, position=position, color=color, game_id=game_id)
+    fullmove_number = 1
+    return render_template('index.html', state=state, position=position, color=color, game_id=game_id, fullmove_number=fullmove_number)
 
 
 def load_game():
@@ -132,16 +127,17 @@ def move():
     moving_input = request.form['movingInput']
     game_id = request.form['game_id']
 
+    # load the game
     game = load_the_game(game_id)
-    print("before move game state: id: " + str(game_id) + " fenstring: " + game.getFenString())
 
+    # do the move if its possible
     game.move(moving_input)
+
+    # get new fen string
     position = game.getFenString()
     color = game.getActivePlayer().getColor()
     state = game.gameState.name
-
-    if not db.engine.has_table('chessGame'):
-        db.create_all()
+    fullmove_number = game.fullmove_number
 
     # set other active game state to 0
     prev_state = db.session.query(Chess).filter(Chess.game_id == game_id and Chess.active_state == 1).all()
@@ -153,9 +149,8 @@ def move():
     game_db = Chess(fen_String=position, game_id=game_id, active_state=1)
     db.session.add(game_db)
     db.session.commit()
-    print("save game state: id: " + str(game_db.game_id) + " state: " + str(game_db.active_state) + " fenstring: " + game_db.fen_String)
 
-    return render_template('index.html', state=state, position=position, color=color, game_id=game_id)
+    return render_template('index.html', state=state, position=position, color=color, game_id=game_id, fullmove_number=fullmove_number)
 
 
 def give_up():

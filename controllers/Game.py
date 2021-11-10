@@ -29,7 +29,9 @@ class Game():
 
         # instantiate board
         this.gameState = State.PLAY
+        this.fullmove_number = 1
         this.parseFenString(this.gameString)
+
         # TODO: Instantiate other components: e.g. History
 
     def parseFenString(self, gameString):
@@ -70,6 +72,8 @@ class Game():
         fullmove_number = params[5]
         if not re.match("^(0|[1-9][0-9]*)$", fullmove_number):
             return -1
+
+        self.fullmove_number = int(fullmove_number)
 
     def getFenString(self):
         lines = ""
@@ -112,7 +116,8 @@ class Game():
         lines += " 0"
 
         # Add fullmove number
-        lines += " 1"
+        lines += " "
+        lines += str(self.fullmove_number)
 
         return lines
 
@@ -236,6 +241,7 @@ class Game():
             this.activePlayer = this.whitePlayer
             this.blackPlayer.setState(ActiveState())
             this.whitePlayer.setState(InactiveState())
+            this.fullmove_number += 1
         print("now its " + this.activePlayer.shortColor + " turn")
 
 
