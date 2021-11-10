@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from controllers.ChessController import index, start_new_game, load_game, save_game, undo, redo, show_history, move, give_up
+from controllers.ChessController import index, start_new_game, load_game, save_game, undo, redo, move, give_up
 
 chess_bp = Blueprint('chess_bp', __name__)
 
@@ -11,7 +11,6 @@ chess_bp.route('/save_game', methods=['POST'])(save_game)
 
 chess_bp.route('/undo', methods=['POST'])(undo)
 chess_bp.route('/redo', methods=['POST'])(redo)
-chess_bp.route('/show_history', methods=['POST'])(show_history)
 
 chess_bp.route('/move', methods=['POST'])(move)
 chess_bp.route('/give_up', methods=['POST'])(give_up)

@@ -8,10 +8,10 @@ db = SQLAlchemy()
 class Chess(db.Model):
     __tablename__ = 'chessGame'
 
-
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    fen_String = db.Column(db.String)
     game_id = db.Column(db.Integer)
+    move_id = db.Column(db.Integer)
+    fen_String = db.Column(db.String)
     active_state = db.Column(db.Integer)
     saved = db.Column(db.Integer, default=0)
 
@@ -19,8 +19,9 @@ class Chess(db.Model):
     def serialize(self):
         return {
             'id': self.moveID,
-            'FENString': self.fen_String,
             'game_id': self.game_id,
+            'move_id': self.move_id,
+            'FENString': self.fen_String,
             'active_state': self.active_state,
             'saved': self.saved
         }

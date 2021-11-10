@@ -48,6 +48,7 @@
 <div id="myBoard"></div>
 <div class="d-flex p-2 bd-highlight gap-2">
     <form action="/undo" method="post">
+        <input type="hidden" name="game_id" value="{{game_id}}">
         <button class="btn btn-outline-secondary" name="undo" type="submit"><i class="fas fa-undo"></i></button>
     </form>
     <form action="/redo" method="post">
