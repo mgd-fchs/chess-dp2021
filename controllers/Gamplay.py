@@ -92,12 +92,17 @@ def moving(game_id, moving_input):
     prev_state = db.session.query(Chess).filter(Chess.game_id == game_id, Chess.active_state == 1).all()
     for p in prev_state:
         p.active_state = 0
+        prev_move_id = p.move_id
     db.session.commit()
 
-    fullmove_number = game.fullmove_number
-    # save active state
-    game_db = Chess(fen_String=game.getFenString(), game_id=game_id, active_state=1, move_id=fullmove_number)
+    move_id = prev_move_id + 1
+    game_db = Chess(fen_String=game.getFenString(), game_id=game_id, active_state=1, move_id=move_id)
     db.session.add(game_db)
+    db.session.commit()
+
+    # delete all other states above move_id
+    upcoming_moves = db.session.query(Chess).filter(Chess.game_id == game_id, Chess.move_id > move_id)
+    upcoming_moves.delete(synchronize_session=False)
     db.session.commit()
 
     return game_id, game.getFenString(), game.getActivePlayer().getColor(), game.gameState.name, game.fullmove_number
