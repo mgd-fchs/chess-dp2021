@@ -59,7 +59,7 @@ def load_the_game(game_id):
         print("Cant load the game")
         return -1
     game_db = db.session.query(Chess).filter(Chess.game_id == game_id, Chess.active_state == 1).limit(1).first()
-    #db.session.commit()
+    db.session.commit()
     print("load game state: id: " + str(game_db.game_id) + " state: " + str(game_db.active_state) + " fenstring: " + game_db.fen_String)
     game = Game(game_db.fen_String)
 
@@ -127,6 +127,8 @@ def move():
     game_id = request.form['game_id']
 
     game = load_the_game(game_id)
+    print("before move game state: id: " + str(game_id) + " fenstring: " + game.getFenString())
+
     game.move(moving_input)
     position = game.getFenString()
     color = game.getActivePlayer().getColor()
@@ -144,6 +146,7 @@ def move():
     game_db = Chess(fen_String=position, game_id=game_id, active_state=1)
     db.session.add(game_db)
     db.session.commit()
+    print("save game state: id: " + str(game_db.game_id) + " state: " + str(game_db.active_state) + " fenstring: " + game_db.fen_String)
 
     return render_template('index.html', state=state, position=position, color=color, game_id=game_id)
 

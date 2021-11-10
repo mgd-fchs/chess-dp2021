@@ -27,9 +27,10 @@ class ChessBoard:
         line_number = 0
         row_number = 0
         for line in lines:
+            line = line[::-1]
             for char in line:
                 if re.match("^[1-8]$", char):
-                    row_number += int(char)
+                    row_number += int(char) - 1
                 elif re.match("^(?i)r|n|b|q|k|p$", char):
                     color = blackPlayer
                     if re.match("^R|N|B|Q|K|P$", char):
