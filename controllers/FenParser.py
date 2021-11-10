@@ -37,6 +37,13 @@ class FenParser():
         en_passant = params[3]
         if not re.match("(^[a-h](3|6)$)|(^-$)", en_passant):
             return -1
+        else: 
+            print("getting passant from fen str")
+            if en_passant != "-":
+                print("passant present")
+                xPos, yPos = self.getPositionFromFen(en_passant)
+                if xPos and yPos:
+                    self.game.board[xPos][yPos].setPassant()
 
         halfmove_clock = params[4]
         if not re.match("^(0|[1-9][0-9]*)$", halfmove_clock):
@@ -146,7 +153,8 @@ class FenParser():
 
         # Add enpassant option
         if enPassantPos != None:
-            lines += self.getPositionFen(enPassantPos)
+            lines += self.getFenFromPosition(enPassantPos)
+            enPassantPos.removePassant()
         else: lines += " -"
 
         # Add halfmove clock
@@ -158,7 +166,7 @@ class FenParser():
 
         return lines
     
-    def getPositionFen(self, spot):
+    def getFenFromPosition(self, spot):
         # get algebraic representation of board position
         # e.g. board position (0,2) returns 'a3'
 
@@ -167,7 +175,18 @@ class FenParser():
         yPos = spot.getPosition()[1]
 
         xString = alph[xPos]
-        yString = alph[yPos]
+        yString = str(yPos + 1)
 
         return " " + xString + yString
 
+    def getPositionFromFen(self, fenStr):
+        alph = "abcdefgh"
+        xPos = None
+        yPos = None
+        if fenStr == "-":
+            return xPos, yPos
+
+        xPos = alph.index(fenStr[0])
+        yPos = int(fenStr[1])-1
+        
+        return xPos, yPos

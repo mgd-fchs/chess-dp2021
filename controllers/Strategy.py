@@ -155,17 +155,33 @@ class SingleDiagonalForward(MovementStrategy):
         color = originSpot.getOccupant().color
 
         validMove = False
+
         if xDiff == 1:
-            if destinationSpot.getOccupant():
-                if color == "white" and yDiff == -1:
+            if color == "white" and yDiff == -1:
+                if destinationSpot.getOccupant():
                     validMove = True
-                elif color == "black" and yDiff == 1:
+                elif destinationSpot.getPassant():
                     validMove = True
+                    # handle en passant moves
+                    if (not destinationSpot.getOccupant()):
+                        hitFigureSpot = game.board[destinationSpot.getPosition()[0]][destinationSpot.getPosition()[1]-1]
+                        hitFigureSpot.freeField()
+                        validMove = True
+
+            elif color == "black" and yDiff == 1:
+                if destinationSpot.getOccupant():
+                    validMove = True
+                elif destinationSpot.getPassant():
+                    # handle en passant moves
+                    if (not destinationSpot.getOccupant()):
+                        hitFigureSpot = game.board[destinationSpot.getPosition()[0]][destinationSpot.getPosition()[1]+1]
+                        hitFigureSpot.freeField()                    
+                        validMove = True
 
         # cannot replace figures of same color
         if destinationSpot.getOccupant():
-            if destinationSpot.getOccupant().color == originSpot.getOccupant().color:
-                validMove = False
+           if destinationSpot.getOccupant().color == originSpot.getOccupant().color:
+               validMove = False
 
         return validMove
 

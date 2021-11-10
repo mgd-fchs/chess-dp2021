@@ -33,7 +33,7 @@ class Game:
 
     def move(self, move):
         # parse move
-        originSpot, destinationSpot = self.parser.parseMove(move)
+        originSpot, destinationSpot = self.parseMove(move)
         self.executeMove(originSpot, destinationSpot)
 
     def executeMove(this, originSpot, destinationSpot):
@@ -86,6 +86,9 @@ class Game:
     
     def parseFenString(this, fenStr):
         return this.parser.parseFenString(fenStr)
+
+    def parseMove(this, move):
+        return this.parser.parseMove(move)
 
     def togglePlayer(this):
         if this.activePlayer == this.whitePlayer:

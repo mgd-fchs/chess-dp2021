@@ -87,3 +87,6 @@ class BoardSpot():
 
     def getPassant(this):
         return this._passant
+
+    def removePassant(this):
+        this._passant = None
