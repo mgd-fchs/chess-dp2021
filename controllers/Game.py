@@ -4,6 +4,7 @@ import re
 from controllers.Player import Player, ActiveState, InactiveState
 from controllers.ChessBoard import ChessBoard
 from controllers.FenParser import FenParser
+from controllers.ChessPiece import *
 from models.Chess import Chess, db
 
 from enum import Enum
@@ -50,7 +51,7 @@ class Game:
 
         valid = False
         for strategy in piece.movementStrategy:
-            valid = strategy.validateMove(this, originSpot, destinationSpot)
+            valid, castleMove = strategy.validateMove(this, originSpot, destinationSpot)
             if valid == True:
                 print("This is a valid move!")
                 break
@@ -58,13 +59,32 @@ class Game:
         if valid == False:
             print("Please select a valid move!")
             return
+        
+        if castleMove:
+            if castleMove == "q":
+                if player.color == "white":
+                    rookOrigin = this.board[0][0]
+                    rookDestination = this.board[3][0]
+                    player.executeCastle(originSpot, destinationSpot, rookOrigin, rookDestination)
+                if player.color == "black":
+                    rookOrigin = this.board[0][7]
+                    rookDestination = this.board[3][7]
+                    player.executeCastle(originSpot, destinationSpot, rookOrigin, rookDestination)
 
-        # TODO promotion
+            if castleMove == "k":
+                if player.color == "white":
+                    rookOrigin = this.board[7][0]
+                    rookDestination = this.board[5][0]
+                    player.executeCastle(originSpot, destinationSpot, rookOrigin, rookDestination)
+                if player.color == "black":
+                    rookOrigin = this.board[7][7]
+                    rookDestination = this.board[5][7]
+                    player.executeCastle(originSpot, destinationSpot, rookOrigin, rookDestination)
+        else:
+            player.makeMove(originSpot, destinationSpot)
 
-
-        player.makeMove(originSpot, destinationSpot)
-        if re.match("^(?i)r|n|b|k|q$", piece.getSymbol()) and originSpot.getOccupant is not None and destinationSpot.getOccupant is not None:
-            this.halfmove_clock += 1
+        if type(piece) == King or type(piece) == Rook:
+            this.toggleCastling(originSpot, piece)
 
         this.togglePlayer()
 
@@ -114,3 +134,24 @@ class Game:
 
     def getActivePlayer(self):
         return self.activePlayer
+
+    def toggleCastling(self, piece, riginSpot):
+        # once either the king or rook have moved, castling is no onger allowed
+        if type(piece) == King:
+            this.activePlayer.removeKingCastle()
+            this.activePlayer.removeQueenCastle()
+        
+        if type(piece) == Rook:
+
+            if originSpot.getPosition()[0] == 7:
+                if this.activePlayer == this.whitePlayer:
+                    this.activePlayer.removeKingCastle()
+                elif this.activePlayer == this.blackPlayer:
+                    this.activePlayer.removeQueenCastle()
+
+            elif originSpot.getPosition()[0] == 0:
+                if this.activePlayer == this.whitePlayer:
+                    this.activePlayer.removeQueenCastle()
+                elif this.activePlayer == this.blackPlayer:
+                    this.activePlayer.removeKingCastle()
+        

@@ -33,6 +33,8 @@ class FenParser():
         casteling = params[2]
         if not re.match("(^K?Q?k?q?$)|(^-$)", casteling):
             return -1
+        else:
+            self.setCastelingCondition(casteling)
 
         en_passant = params[3]
         if not re.match("(^[a-h](3|6)$)|(^-$)", en_passant):
@@ -59,11 +61,6 @@ class FenParser():
         
 
     def parseMove(self, move):
-
-        if move == "0-0" or move == "0-0-0":
-        #TODO casteling
-            print("TODO casteling")
-            return
 
         move = move.split()
         # normal move
@@ -150,8 +147,20 @@ class FenParser():
         lines += self.game.activePlayer.shortColor
 
         # TODO
-        # Add possible casteling options
-        lines += " KQkq"
+        # Add castling option
+        castleStr = " "
+        if self.game.whitePlayer.kingCastle == True:
+            castleStr += "K"
+        if self.game.whitePlayer.queenCastle == True:
+            castleStr += "Q"
+        if self.game.blackPlayer.kingCastle == True:
+            castleStr += "k"
+        if self.game.blackPlayer.queenCastle == True:
+            castleStr += "q"
+        if castleStr == " ":
+            castleStr += "-"
+
+        lines += castleStr
 
         # Add enpassant option
         if enPassantPos != None:
@@ -193,3 +202,14 @@ class FenParser():
         yPos = int(fenStr[1])-1
         
         return xPos, yPos
+
+    def setCastelingCondition(self, castleString):
+        # set castling parameters in player class
+        if "K" in castleString:
+            self.game.whitePlayer.setKingCastle()
+        if "Q" in castleString:
+            self.game.whitePlayer.setQueenCastle()
+        if "k" in castleString:
+            self.game.blackPlayer.setKingCastle()
+        if "q" in castleString:
+            self.game.blackPlayer.setQueenCastle()

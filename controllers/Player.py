@@ -6,25 +6,30 @@ from abc import ABC, abstractmethod
 class Player():
     _instances = []
 
-    def __init__(this, color):
+    def __init__(self, color):
 
-        this.color = color
+        self.color = color
+        self.queenCastle = False
+        self.kingCastle = False
 
         if color == "white":
-            this.shortColor = "w"
-            this.setState(ActiveState())
+            self.shortColor = "w"
+            self.setState(ActiveState())
         elif color == "black":
-            this.shortColor = "b"
-            this.setState(InactiveState())
+            self.shortColor = "b"
+            self.setState(InactiveState())
 
-        this._instances.append(this)
+        self._instances.append(self)
 
-    def setState(this, state):
-        this._state = state
-        this._state.player = this
+    def setState(self, state):
+        self._state = state
+        self._state.player = self
 
-    def makeMove(this, originField, destinationField):
-        this._state.makeMove(originField, destinationField)
+    def makeMove(self, originField, destinationField):
+        self._state.makeMove(originField, destinationField)
+    
+    def executeCastle(self, originField, destinationField, rookOrigin, rookDestination):
+        self._state.executeCastle(originField, destinationField, rookOrigin, rookDestination)
 
     def getState(self):
         return self._state
@@ -32,28 +37,40 @@ class Player():
     def getColor(self):
         return self.color
 
+    def setKingCastle(self):
+        self.kingCastle = True
+
+    def setQueenCastle(self):
+        self.queenCastle = True
+    
+    def removeKingCastle(self):
+        self.kingCastle = True
+
+    def removeQueenCastle(self):
+        self.queenCastle = True
+
 
 
 class State(ABC):
     @property
-    def context(this):
-        return this._player
+    def context(self):
+        return self._player
 
     @context.setter
-    def player(this, player):
-        this._player = player
+    def player(self, player):
+        self._player = player
 
     @abstractmethod
-    def makeMove(this, originField, destinationField):
+    def makeMove(self, originField, destinationField):
         pass
 
     @abstractmethod
-    def giveUp(this):
+    def giveUp(self):
         pass
 
 
 class ActiveState(State):
-    def makeMove(this, originField, destinationField):
+    def makeMove(self, originField, destinationField):
         movingPiece = originField.getOccupant()
 
         print("Moving piece " + str(originField.getOccupant()) + " to " + str(destinationField.getPosition()))
@@ -61,24 +78,44 @@ class ActiveState(State):
         originField.freeField()
         destinationField.occupyField(movingPiece)
 
-        this.player.setState(InactiveState())
+        self.player.setState(InactiveState())
 
         # Activate other player
-        playerInstance = Player._instances.index(this.player)
+        playerInstance = Player._instances.index(self.player)
         if playerInstance == 1:
             Player._instances[0].setState(ActiveState())
         elif playerInstance == 0:
             Player._instances[1].setState(ActiveState())
 
-    def giveUp(this):
+    def executeCastle(self, originField, destinationField, rookOrigin, rookDestination):
+        king = originField.getOccupant()
+        rook = rookOrigin.getOccupant()
+
+        originField.freeField()
+        destinationField.occupyField(king)
+
+        rookOrigin.freeField()
+        rookDestination.occupyField(rook)        
+
+        # Activate other player
+        playerInstance = Player._instances.index(self.player)
+        if playerInstance == 1:
+            Player._instances[0].setState(ActiveState())
+        elif playerInstance == 0:
+            Player._instances[1].setState(ActiveState())
+
+    def giveUp(self):
         print("Giving up")
         # set winning state to other player
 
 
 class InactiveState(State):
-    def makeMove(this, originField, destinationField):
+    def makeMove(self, originField, destinationField):
         print("Cannot make move. It's not your turn")
 
-    def giveUp(this):
+    def executeCastle(self, originField, destinationField, rookOrigin, rookDestination):
+        print("Cannot make move. It's not your turn")
+
+    def giveUp(self):
         print("Giving up")
         # set winning state to other player

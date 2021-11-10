@@ -99,7 +99,7 @@ class King(ChessPiecePrototype):
         this.color = player.color
         this.symbol = "k"
 
-        this.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonal])
+        this.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonal, Strategy.CastleKingside, Strategy.CastleQueenside])
 
     def clone(this):
         return copy.deepcopy(this)
