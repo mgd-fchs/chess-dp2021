@@ -12,7 +12,11 @@ class SingleForward(MovementStrategy):
     # overwrite validateMove() method
     def validateMove(game, originSpot, destinationSpot):
         validMove = False
-
+        
+        if not originSpot.getOccupant():
+            print("Cannot move piece from empty spot!")
+            return validMove
+        
         # check correct movement
         if originSpot.getOccupant().color == "white":
             if originSpot.getPosition()[1] == destinationSpot.getPosition()[1] - 1:
@@ -35,7 +39,11 @@ class DoubleForward(MovementStrategy):
     def validateMove(game, originSpot, destinationSpot):
         validMove = False
         castleMove = False
-        
+
+        if not originSpot.getOccupant():
+            print("Cannot move piece from empty spot!")
+            return validMove
+
         if originSpot.getPosition()[0] != originSpot.getPosition()[0]:
             validMove = False
             return validMove, False
@@ -66,7 +74,11 @@ class MultipleStraight(MovementStrategy):
     # overwrite validateMove() method
     def validateMove(game, originSpot, destinationSpot):
         validMove = False
-        print("validating...")
+
+        if not originSpot.getOccupant():
+            print("Cannot move piece from empty spot!")
+            return validMove
+
         # check correct movement
         if originSpot.getPosition()[1] == destinationSpot.getPosition()[1]:
             # check path is free
@@ -107,11 +119,15 @@ class MultipleDiagonal(MovementStrategy):
 
     # overwrite validateMove() method
     def validateMove(game, originSpot, destinationSpot):
+        validMove = False
+
+        if not originSpot.getOccupant():
+            print("Cannot move piece from empty spot!")
+            return validMove       
+            
         xDiff = abs(originSpot.getPosition()[0] - destinationSpot.getPosition()[0])
         yDiff = abs(originSpot.getPosition()[1] - destinationSpot.getPosition()[1])
 
-        validMove = False
-        
         # check correct movement
         if xDiff == yDiff:
             validMove = True
@@ -135,10 +151,15 @@ class SingleDiagonal(MovementStrategy):
 
     # overwrite validateMove() method
     def validateMove(game, originSpot, destinationSpot):
+        validMove = False
+
+        if not originSpot.getOccupant():
+            print("Cannot move piece from empty spot!")
+            return validMove
+        
         xDiff = abs(originSpot.getPosition()[0] - destinationSpot.getPosition()[0])
         yDiff = abs(originSpot.getPosition()[1] - destinationSpot.getPosition()[1])
 
-        validMove = False
         if (xDiff == 1 and yDiff == 1):
             validMove = True
         
@@ -155,11 +176,14 @@ class SingleDiagonalForward(MovementStrategy):
 
     # overwrite validateMove() method
     def validateMove(game, originSpot, destinationSpot):
+        validMove = False
+        
+        if not originSpot.getOccupant():
+            print("Cannot move piece from empty spot!")
+            return validMove
+        
         xDiff = abs(originSpot.getPosition()[0] - destinationSpot.getPosition()[0])
         yDiff = originSpot.getPosition()[1] - destinationSpot.getPosition()[1]
-        color = originSpot.getOccupant().color
-
-        validMove = False
 
         if xDiff == 1:
             if color == "white" and yDiff == -1:
@@ -196,10 +220,14 @@ class TJump(MovementStrategy):
 
     # overwrite validateMove() method
     def validateMove(game, originSpot, destinationSpot):
-        xDiff = abs(originSpot.getPosition()[0] - destinationSpot.getPosition()[0])
-        yDiff = abs(originSpot.getPosition()[1] - destinationSpot.getPosition()[1])
-
         validMove = False
+        
+        if not originSpot.getOccupant():
+            print("Cannot move piece from empty spot!")
+            return validMove
+
+        xDiff = abs(originSpot.getPosition()[0] - destinationSpot.getPosition()[0])
+        yDiff = abs(originSpot.getPosition()[1] - destinationSpot.getPosition()[1])      
 
         if xDiff == 2:
             if yDiff == 1:
@@ -218,6 +246,10 @@ class CastleQueenside(MovementStrategy):
 
     def validateMove(game, originSpot, destinationSpot):
         validMove = False
+        
+        if not originSpot.getOccupant():
+            print("Cannot move piece from empty spot!")
+            return validMove       
         
         if destinationSpot.getPosition()[0] != originSpot.getPosition()[0] - 2:
             validMove = False
@@ -244,6 +276,10 @@ class CastleKingside(MovementStrategy):
 
     def validateMove(game, originSpot, destinationSpot):
         validMove = False
+
+        if not originSpot.getOccupant():
+            print("Cannot move piece from empty spot!")
+            return validMove
 
         if destinationSpot.getPosition()[0] != originSpot.getPosition()[0] + 2:
             validMove = False

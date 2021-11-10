@@ -8,7 +8,7 @@ from models.Chess import Chess
 from flask_sqlalchemy import SQLAlchemy
 
 from controllers.Game import Game
-from controllers.Gamplay import init_new_game, load_the_game, load_saved_game, save_game_by_id, moving, redo_move, undo_move
+from controllers.Gameplay import *
 db = SQLAlchemy()
 
 # TODO

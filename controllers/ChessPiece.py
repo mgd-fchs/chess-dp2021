@@ -19,7 +19,7 @@ class ChessPiecePrototype(ABC):
 
     def getSymbol(this):
         if this.color == None:
-            print("color error")
+            print("No color symbol found for piece " + str(this))
         if this.color == "white":
             return this.symbol.upper()
         else:
@@ -39,7 +39,10 @@ class Pawn(ChessPiecePrototype):
         this.color = player.color
         this.symbol = "p"
         
-        this.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonalForward, Strategy.DoubleForward])
+        try:
+            this.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonalForward, Strategy.DoubleForward])
+        except AttributeError:
+            print("Movement strategy not found for " + str(this) + "!")
 
     def clone(this):
         return copy.deepcopy(this)
@@ -51,8 +54,11 @@ class Bishop(ChessPiecePrototype):
         this.color = player.color
         this.symbol = "b"
 
-        this.setMovementStrategy([Strategy.MultipleDiagonal])
-
+        try:
+            this.setMovementStrategy([Strategy.MultipleDiagonal])
+        except AttributeError:
+            print("Movement strategy not found for " + str(this) + "!")
+    
     def clone(this):
         return copy.deepcopy(this)
 
@@ -63,8 +69,11 @@ class Knight(ChessPiecePrototype):
         this.color = player.color
         this.symbol = "n"
 
-        this.setMovementStrategy([Strategy.TJump])
-
+        try:
+            this.setMovementStrategy([Strategy.TJump])
+        except AttributeError:
+            print("Movement strategy not found for " + str(this) + "!")
+    
     def clone(this):
         return copy.deepcopy(this)
 
@@ -75,7 +84,10 @@ class Rook(ChessPiecePrototype):
         this.color = player.color
         this.symbol = "r"
         
-        this.setMovementStrategy([Strategy.MultipleStraight])
+        try:
+            this.setMovementStrategy([Strategy.MultipleStraight])
+        except AttributeError:
+            print("Movement strategy not found for " + str(this) + "!")        
 
     def clone(this):
         return copy.deepcopy(this)
@@ -86,8 +98,11 @@ class Queen(ChessPiecePrototype):
         this.player = player
         this.color = player.color
         this.symbol = "q"
-
-        this.setMovementStrategy([Strategy.MultipleStraight, Strategy.MultipleDiagonal])
+        
+        try:
+            this.setMovementStrategy([Strategy.MultipleStraight, Strategy.MultipleDiagonal])
+        except AttributeError:
+            print("Movement strategy not found for " + str(this) + "!")
 
     def clone(this):
         return copy.deepcopy(this)
@@ -99,7 +114,10 @@ class King(ChessPiecePrototype):
         this.color = player.color
         this.symbol = "k"
 
-        this.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonal, Strategy.CastleKingside, Strategy.CastleQueenside])
+        try:
+            this.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonal, Strategy.CastleKingside, Strategy.CastleQueenside])
+        except AttributeError:
+            print("Movement strategy not found for " + str(this) + "!")
 
     def clone(this):
         return copy.deepcopy(this)

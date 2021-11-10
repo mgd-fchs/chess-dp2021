@@ -40,7 +40,6 @@ class FenParser():
         if not re.match("(^[a-h](3|6)$)|(^-$)", en_passant):
             return -1
 
-        print("getting passant from fen str")
         if en_passant != "-":
             print("passant present")
             xPos, yPos = self.getPositionFromFen(en_passant)
@@ -52,6 +51,8 @@ class FenParser():
             return -1
 
         self.game.halfmove_clock = int(halfmove_clock)
+        if int(halfmove_clock) >= 50:
+            self.game.setWinner(active_player)
 
         fullmove_number = params[5]
         if not re.match("^(0|[1-9][0-9]*)$", fullmove_number):
@@ -63,6 +64,14 @@ class FenParser():
     def parseMove(self, move):
 
         move = move.split()
+
+        if len(move) < 2:
+            print("Please enter a valid move! Parser takes input of length 2 or 3 but was: " + str(len(move)))
+            return
+        elif len(move) > 3:
+            print("Please enter a valid move! Parser takes input of length 2 or 3 but was: " + str(len(move)))
+            return
+
         # normal move
         if len(move) == 2:
             move_from = move[0]
@@ -74,8 +83,8 @@ class FenParser():
             move_to = move[1]
             switch_to = move[2]
 
-        if len(move_from) != 3 or len(move_to) != 3 or move_from[0] != move_to[0]:
-            print("wrong input" + str(len(move_from)))
+        if move_from[0] != move_to[0]:
+            print("Wrong input, must move the same figure. Input was:" + str(move_from) + " " + str(move_to) + ".")
             return
 
         figure = move_from[0]
@@ -85,13 +94,19 @@ class FenParser():
         move_to_line = move_to[2]
         move_to_row = move_to[1]
 
-        if not re.match("^[a-h]$", move_from_row) or\
-                not re.match("^[1-8]$", move_from_line) or \
-                not re.match("^[a-h]$", move_to_row) or \
-                not re.match("^[1-8]$", move_to_line) or \
-                not re.match("^(?i)r|n|b|q|k|p$", figure):
-            # TODO Error handling
-            print("error")
+        if not re.match("^[a-h]$", move_from_row):
+            print("Incorrect input: Cannot move piece from row " + str(move_from_row))
+            return
+        elif not re.match("^[1-8]$", move_from_line):
+            print("Incorrect input: Cannot move piece from line " + str(move_from_line))
+            return
+        elif not re.match("^[a-h]$", move_to_row):
+            print("Incorrect input: Cannot move piece to row " + str(move_to_row))
+            return
+        elif not re.match("^[1-8]$", move_to_line):
+            print("Incorrect input: Cannot move piece to row " + str(move_to_line))             
+        elif not re.match("^(?i)r|n|b|q|k|p$", figure):
+            print("Incorrect input: Cannot move piece  " + str(figure)) 
             return
 
         # check right player
@@ -108,7 +123,7 @@ class FenParser():
         originSpot = self.game.board[int(move_from_row)-1][int(move_from_line)-1]
         if originSpot.getOccupant() != None:
             if originSpot.getOccupant().getSymbol() != figure:
-                print("wrong figure selected " + originSpot.getOccupant().getSymbol())
+                print("Wrong figure selected: " + originSpot.getOccupant().getSymbol())
                 return
         destinationSpot = self.game.board[int(move_to_row)-1][int(move_to_line)-1]
         return (originSpot, destinationSpot)

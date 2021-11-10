@@ -52,7 +52,7 @@ def load_saved_game(game_id):
         game_db = db.session.query(Chess).filter(Chess.game_id == game_id, Chess.active_state == 1).limit(1).first()
     if game_db is None:
         db.session.commit()
-        print("loading game error")
+        print("Game " + str(game_id) + " could not be loaded!")
         return -1
     game = Game(game_db.fen_String)
     db.session.commit()
@@ -167,5 +167,3 @@ def remove_game(game_id):
     games = db.session.query(Chess).filter(Chess.game_id == game_id)
     games.delete(synchronize_session=False)
     db.session.commit()
-
-

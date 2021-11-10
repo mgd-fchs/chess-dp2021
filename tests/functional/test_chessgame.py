@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from routes.chess_bp import chess_bp
 
-from controllers.Gamplay import *
+from controllers.Gameplay import *
 
 db = SQLAlchemy()
 

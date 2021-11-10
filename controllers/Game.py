@@ -24,7 +24,6 @@ class Game:
 
         this.activePlayer = None
         this.gameState = State.INIT
-        # example fen string: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
         this.gameString = fen
         this.board = None
 
@@ -37,7 +36,12 @@ class Game:
 
     def move(self, move):
         # parse move
-        originSpot, destinationSpot = self.parseMove(move)
+        try:
+            originSpot, destinationSpot = self.parseMove(move)
+        except TypeError:
+            print("Error parsing move! Please check your input")
+            return
+        
         self.executeMove(originSpot, destinationSpot)
 
     def executeMove(this, originSpot, destinationSpot):
@@ -49,6 +53,7 @@ class Game:
 
         player = piece.player
 
+        # check validity of move
         valid = False
         for strategy in piece.movementStrategy:
             valid, castleMove = strategy.validateMove(this, originSpot, destinationSpot)
@@ -60,6 +65,7 @@ class Game:
             print("Please select a valid move!")
             return
         
+        # handle casteling
         if castleMove:
             if castleMove == "q":
                 if player.color == "white":
@@ -83,9 +89,11 @@ class Game:
         else:
             player.makeMove(originSpot, destinationSpot)
 
+        # disable future casteling if rook or king have moved
         if type(piece) == King or type(piece) == Rook:
             this.toggleCastling(originSpot, piece)
 
+        # TODO: Check if this can be done via state pattern only!
         this.togglePlayer()
 
 
@@ -130,19 +138,18 @@ class Game:
             this.blackPlayer.setState(ActiveState())
             this.whitePlayer.setState(InactiveState())
             this.fullmove_number += 1
-        print("now its " + this.activePlayer.color + "'s turn")
+        print("It's " + this.activePlayer.color + "'s turn")
 
     def getActivePlayer(self):
         return self.activePlayer
 
-    def toggleCastling(self, piece, riginSpot):
+    def toggleCastling(self, piece, originSpot):
         # once either the king or rook have moved, castling is no onger allowed
         if type(piece) == King:
             this.activePlayer.removeKingCastle()
             this.activePlayer.removeQueenCastle()
         
         if type(piece) == Rook:
-
             if originSpot.getPosition()[0] == 7:
                 if this.activePlayer == this.whitePlayer:
                     this.activePlayer.removeKingCastle()
@@ -154,4 +161,12 @@ class Game:
                     this.activePlayer.removeQueenCastle()
                 elif this.activePlayer == this.blackPlayer:
                     this.activePlayer.removeKingCastle()
-        
+           
+    def setWinner(self, shortColor, fivtyMoves = True):
+
+        if fivtyMoves == True:
+            print("Game ended in draw!")
+            # self.end()
+        else: print(str(shortColor) + " is the winner!")
+            # display winner
+            # self.end()
