@@ -37,17 +37,19 @@ class FenParser():
         en_passant = params[3]
         if not re.match("(^[a-h](3|6)$)|(^-$)", en_passant):
             return -1
-        else: 
-            print("getting passant from fen str")
-            if en_passant != "-":
-                print("passant present")
-                xPos, yPos = self.getPositionFromFen(en_passant)
-                if xPos and yPos:
-                    self.game.board[xPos][yPos].setPassant()
+
+        print("getting passant from fen str")
+        if en_passant != "-":
+            print("passant present")
+            xPos, yPos = self.getPositionFromFen(en_passant)
+            if xPos and yPos:
+                self.game.board[xPos][yPos].setPassant()
 
         halfmove_clock = params[4]
         if not re.match("^(0|[1-9][0-9]*)$", halfmove_clock):
             return -1
+
+        self.game.halfmove_clock = int(halfmove_clock)
 
         fullmove_number = params[5]
         if not re.match("^(0|[1-9][0-9]*)$", fullmove_number):
@@ -158,7 +160,8 @@ class FenParser():
         else: lines += " -"
 
         # Add halfmove clock
-        lines += " 0"
+        lines += " "
+        lines += str(self.game.halfmove_clock)
 
         # Add fullmove number
         lines += " "

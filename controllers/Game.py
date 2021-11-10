@@ -1,4 +1,6 @@
 # Composite class
+import re
+
 from controllers.Player import Player, ActiveState, InactiveState
 from controllers.ChessBoard import ChessBoard
 from controllers.FenParser import FenParser
@@ -28,6 +30,7 @@ class Game:
         # instantiate board
         this.gameState = State.PLAY
         this.fullmove_number = 1
+        this.halfmove_clock = 0
         this.parser = FenParser(this)
         this.parseFenString(this.gameString)
 
@@ -57,6 +60,9 @@ class Game:
             return
 
         player.makeMove(originSpot, destinationSpot)
+        if re.match("^(?i)r|n|b|k|q$", piece.getSymbol()) and originSpot.getOccupant is not None and destinationSpot.getOccupant is not None:
+            this.halfmove_clock += 1
+
         this.togglePlayer()
 
     def end(this):
