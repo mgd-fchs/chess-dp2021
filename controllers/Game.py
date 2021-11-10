@@ -59,11 +59,15 @@ class Game:
             print("Please select a valid move!")
             return
 
+        # TODO promotion
+
+
         player.makeMove(originSpot, destinationSpot)
         if re.match("^(?i)r|n|b|k|q$", piece.getSymbol()) and originSpot.getOccupant is not None and destinationSpot.getOccupant is not None:
             this.halfmove_clock += 1
 
         this.togglePlayer()
+
 
     def end(this):
         # to be called when a player wins or gives up

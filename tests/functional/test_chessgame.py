@@ -41,7 +41,6 @@ def test_init_move(app):
         remove_game(game_id)
 
 
-
 def test_init_move_save_move(app):
     with app.app_context():
         game_id, position, color, state, fullmove_number = init_new_game()

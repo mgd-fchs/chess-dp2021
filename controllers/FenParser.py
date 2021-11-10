@@ -71,7 +71,7 @@ class FenParser():
             move_from = move[0]
             move_to = move[1]
 
-        # a pawn
+        # a promotion
         if len(move) == 3:
             move_from = move[0]
             move_to = move[1]
