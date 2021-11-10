@@ -33,18 +33,27 @@ class DoubleForward(MovementStrategy):
 
     def validateMove(game, originSpot, destinationSpot):
         validMove = False
-
+        
         if originSpot.getPosition()[0] != originSpot.getPosition()[0]:
             validMove = False
             return validMove
 
+        if destinationSpot.getOccupant():
+            validMove = False
+
+        xPos = originSpot.getPosition()[0]
+
         if originSpot.getOccupant().color == "white":
             if originSpot.getPosition()[1] == 1:
                 if destinationSpot.getPosition()[1] == 3:
+                    # set en passant option
+                    game.board[xPos][2].setPassant()
                     validMove = True
         else:
             if originSpot.getPosition()[1] == 6:
                 if destinationSpot.getPosition()[1] == 4:
+                    # set en passant option
+                    game.board[xPos][5].setPassant()
                     validMove = True
 
         return validMove

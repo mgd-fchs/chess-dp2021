@@ -64,6 +64,7 @@ class BoardSpot():
         this._xPos = xPosition
         this._yPos = yPosition
         this._occupant = None
+        this._passant = False
 
     def occupyField(this, chessPiece):
         this._occupant = chessPiece
@@ -80,3 +81,9 @@ class BoardSpot():
         
         position = tuple((this._xPos, this._yPos))
         return position
+    
+    def setPassant(this):
+        this._passant = True
+
+    def getPassant(this):
+        return this._passant
