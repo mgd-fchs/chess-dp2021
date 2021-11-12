@@ -66,8 +66,22 @@ class FenParser():
 
         move = move.split()
         switchFigure = None
+        castelingType = None
 
-        if len(move) < 2:
+        if len(move) == 1:
+            # casteling
+
+            if move[0] == "0-0":
+                print("Kingside casteling!")
+                castelingType = "k"
+                return None, None, None, castelingType
+
+            elif move[0] == "0-0-0":
+                print("Queenside casteling!")
+                castelingType = "q"
+                return None, None, None, castelingType
+
+        elif len(move) < 2:
             print("Please enter a valid move! Parser takes input of length 2 or 3 but was: " + str(len(move)))
             return
         elif len(move) > 3:
@@ -129,7 +143,7 @@ class FenParser():
                 print("Wrong figure selected: " + originSpot.getOccupant().getSymbol())
                 return
         destinationSpot = self.game.board[int(move_to_row)-1][int(move_to_line)-1]
-        return (originSpot, destinationSpot, switchFigure)
+        return (originSpot, destinationSpot, switchFigure, castelingType)
 
     def getFenString(self):
         lines = ""

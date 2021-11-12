@@ -87,6 +87,8 @@ class ActiveState(State):
         elif playerInstance == 0:
             Player._instances[1].setState(ActiveState())
 
+        return 0
+
     def executeCastle(self, originField, destinationField, rookOrigin, rookDestination):
         king = originField.getOccupant()
         rook = rookOrigin.getOccupant()
@@ -103,6 +105,8 @@ class ActiveState(State):
             Player._instances[0].setState(ActiveState())
         elif playerInstance == 0:
             Player._instances[1].setState(ActiveState())
+        
+        return 0
 
     def giveUp(self):
         print("Giving up")
@@ -112,9 +116,11 @@ class ActiveState(State):
 class InactiveState(State):
     def makeMove(self, originField, destinationField):
         print("Cannot make move. It's not your turn")
+        return -1
 
     def executeCastle(self, originField, destinationField, rookOrigin, rookDestination):
         print("Cannot make move. It's not your turn")
+        return -1
 
     def giveUp(self):
         print("Giving up")

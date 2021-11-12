@@ -37,22 +37,27 @@ class Game:
         self.parseFenString(self.gameString)
 
     def move(self, move):
-        # parse move
+        # ensure correct move execution
+
         try:
-            originSpot, destinationSpot, newFigure = self.parseMove(move)
+            originSpot, destinationSpot, newFigure, castleType = self.parseMove(move)
         except TypeError:
             print("Error parsing move! Please check your input")
             return
 
-        moveMade = self.executeMove(originSpot, destinationSpot)
-        
+        if castleType:
+            moveMade = self.executeCastle(castleType)
+        else: 
+            moveMade = self.executeMove(originSpot, destinationSpot)
+    
         if newFigure and (moveMade != -1):
             self.promotePawn(destinationSpot, newFigure)
-
-        # TODO: Check if this can be done via state pattern only!
-        self.togglePlayer()
+        if moveMade != -1:
+            self.togglePlayer()
 
     def executeMove(self, originSpot, destinationSpot):
+        # execute a regular move
+
         piece = originSpot.getOccupant()
 
         if not piece:
@@ -69,7 +74,7 @@ class Game:
         # check validity of move
         valid = False
         for strategy in piece.movementStrategy:
-            valid, castleMove = strategy.validateMove(self, originSpot, destinationSpot)
+            valid = strategy.validateMove(self, originSpot, destinationSpot)
             if valid == True:
                 print("This is a valid move!")
                 break
@@ -78,38 +83,69 @@ class Game:
             print("Please select a valid move!")
             return -1
         
-        # handle casteling
-        if castleMove:
-            if castleMove == "q":
-                if player.color == "white":
-                    rookOrigin = self.board[0][0]
-                    rookDestination = self.board[3][0]
-                    player.executeCastle(originSpot, destinationSpot, rookOrigin, rookDestination)
-                if player.color == "black":
-                    rookOrigin = self.board[0][7]
-                    rookDestination = self.board[3][7]
-                    player.executeCastle(originSpot, destinationSpot, rookOrigin, rookDestination)
-
-            if castleMove == "k":
-                if player.color == "white":
-                    rookOrigin = self.board[7][0]
-                    rookDestination = self.board[5][0]
-                    player.executeCastle(originSpot, destinationSpot, rookOrigin, rookDestination)
-                if player.color == "black":
-                    rookOrigin = self.board[7][7]
-                    rookDestination = self.board[5][7]
-                    player.executeCastle(originSpot, destinationSpot, rookOrigin, rookDestination)
-        else:
-            player.makeMove(originSpot, destinationSpot)
-            if takeKing == True:
-                self.setWinner(player.shortColor, "takeKing")
+        player.makeMove(originSpot, destinationSpot)
+        
+        if takeKing == True:
+            self.setWinner(player.shortColor, "takeKing")
 
         # disable future casteling if rook or king have moved
         if type(piece) == King or type(piece) == Rook:
             self.toggleCastling(originSpot, piece)
+        
+        return 0
 
+    def executeCastle(self, castleType):
+        player = self.activePlayer
+
+        if castleType == "q":
+            if player.color == "white":
+                originSpot = self.board[4][0]
+                destinationSpot = self.board[2][0]
+                rookOrigin = self.board[0][0]
+                rookDestination = self.board[3][0]
+                valid = self.checkValidMovement(originSpot.getOccupant(), originSpot, destinationSpot)
+                if not valid:
+                    return -1
+                player.executeCastle(originSpot, destinationSpot, rookOrigin, rookDestination)
+                
+            if player.color == "black":
+                originSpot = self.board[4][7]
+                destinationSpot = self.board[2][7]
+                rookOrigin = self.board[0][7]
+                rookDestination = self.board[3][7]
+                valid = self.checkValidMovement(originSpot.getOccupant(), originSpot, destinationSpot)
+                if not valid:
+                    return -1
+                player.executeCastle(originSpot, destinationSpot, rookOrigin, rookDestination)
+
+        if castleType == "k":
+            if player.color == "white":
+                originSpot = self.board[4][0]
+                destinationSpot = self.board[6][0]
+                rookOrigin = self.board[7][0]
+                rookDestination = self.board[5][0]
+                valid = self.checkValidMovement(originSpot.getOccupant(), originSpot, destinationSpot)
+                if not valid:
+                    return -1
+                player.executeCastle(originSpot, destinationSpot, rookOrigin, rookDestination)
+
+            if player.color == "black":
+                originSpot = self.board[4][7]
+                destinationSpot = self.board[6][7]
+                rookOrigin = self.board[7][7]
+                rookDestination = self.board[5][7]
+                valid = self.checkValidMovement(originSpot.getOccupant(), originSpot, destinationSpot)
+                if not valid:
+                    return -1
+                player.executeCastle(originSpot, destinationSpot, rookOrigin, rookDestination)
+
+        piece = originSpot.getOccupant()
+        self.toggleCastling(originSpot, piece)
+        return
+    
 
     def promotePawn(self, destinationSpot, newFigure):
+
         validPromotion = False
 
         if destinationSpot.getOccupant().color == "white":
@@ -184,7 +220,25 @@ class Game:
                     self.activePlayer.removeQueenCastle()
                 elif self.activePlayer == self.blackPlayer:
                     self.activePlayer.removeKingCastle()
-           
+    
+    def checkValidMovement(self, piece, originSpot, destinationSpot):
+        # check validity of move
+        if not piece:
+            print("King is not in a position to castle!")
+            return False
+            
+        valid = False
+        for strategy in piece.movementStrategy:
+            valid = strategy.validateMove(self, originSpot, destinationSpot)
+            if valid == True:
+                print("This is a valid move!")
+                break
+
+        if valid == False:
+            print("Please select a valid move!")
+            return False
+        return valid
+
     def setWinner(self, shortColor, condition):
         print("Setting winner")
         # TODO: Replace condition strings (?)
