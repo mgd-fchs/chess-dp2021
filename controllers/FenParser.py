@@ -42,7 +42,6 @@ class FenParser():
             return -1
 
         if en_passant != "-":
-            print("passant present")
             xPos, yPos = self.getPositionFromFen(en_passant)
             if xPos and yPos:
                 self.game.board[xPos][yPos].setPassant()
@@ -127,9 +126,8 @@ class FenParser():
             return
 
         # check right player
-        if re.match("^r|n|b|q|k|p$", figure) and self.game.activePlayer.shortColor != "b":
-            # TODO Error handling
-            print("not right player " + str(self.game.activePlayer.shortColor) + " " + str(figure))
+        if re.match("^r|n|b|q|k|p$", figure) and self.game.getActivePlayer().shortColor != "b":
+            print("not right player " + str(self.game.getActivePlayer().shortColor) + " " + str(figure))
             return
 
         # transfer row a-h to numbers
@@ -176,7 +174,7 @@ class FenParser():
 
         # Add Players turn
         lines += " "
-        lines += self.game.activePlayer.shortColor
+        lines += self.game.getActivePlayer().shortColor
 
         # TODO
         # Add castling option

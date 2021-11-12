@@ -1,12 +1,11 @@
-# imports
-import controllers.ChessPiece
-import re
 # Chess board class to set up initial state of the board and generate playable positions
+# imports
+import re
 from controllers import ChessPiece
 
 
 class ChessBoard:
-    positions = []
+    _positions = []
 
     def __init__(this):
         pass
@@ -17,11 +16,11 @@ class ChessBoard:
         # Numbers are the left free spots
 
         # initialize board by creating playable fields
-        this.positions = []
+        this._positions = []
         for i in range(0, 8):
-            this.positions.append([])
+            this._positions.append([])
             for j in range(0, 8):
-                this.positions[i].append(BoardSpot(i, j))
+                this._positions[i].append(BoardSpot(i, j))
 
         # set the pieces to their positions
         line_number = 0
@@ -49,14 +48,14 @@ class ChessBoard:
                         chess_piece = ChessPiece.Pawn(color)
                     else:
                         return -1
-                    this.positions[7-row_number][7-line_number].occupyField(chess_piece)
+                    this._positions[7-row_number][7-line_number].occupyField(chess_piece)
 
                 else:
                     return -1
                 row_number += 1
             row_number = 0
             line_number += 1
-        return this.positions
+        return this._positions
 
 
 class BoardSpot():
@@ -77,8 +76,7 @@ class BoardSpot():
         this._occupant = None
 
     def getPosition(this):
-        # getter function for coordinates
-        
+        # getter function for coordinates        
         position = tuple((this._xPos, this._yPos))
         return position
     

@@ -1,14 +1,12 @@
 # imports
-import json
 from abc import ABC, abstractmethod
-
 
 class Player():
     _instances = []
 
     def __init__(self, color):
 
-        self.color = color
+        self._color = color
         self.queenCastle = False
         self.kingCastle = False
 
@@ -35,7 +33,7 @@ class Player():
         return self._state
 
     def getColor(self):
-        return self.color
+        return self._color
 
     def setKingCastle(self):
         self.kingCastle = True
@@ -74,8 +72,8 @@ class ActiveState(State):
         movingPiece = originField.getOccupant()
 
         print("Moving piece " + str(originField.getOccupant()) + " to " + str(destinationField.getPosition()))
-
         originField.freeField()
+        destinationField.freeField()
         destinationField.occupyField(movingPiece)
 
         self.player.setState(InactiveState())
@@ -105,7 +103,6 @@ class ActiveState(State):
             Player._instances[0].setState(ActiveState())
         elif playerInstance == 0:
             Player._instances[1].setState(ActiveState())
-        
         return 0
 
     def giveUp(self):

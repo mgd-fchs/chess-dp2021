@@ -9,21 +9,30 @@ from controllers.Strategy import MovementStrategy
 
 class ChessPiecePrototype(ABC):
     def __init__(self):
-        self.player = None
-        self.symbol = None
-        self.movementStrategy = MovementStrategy()
-        self.color = None
+        self._player = None
+        self._symbol = None
+        self._movementStrategy = MovementStrategy()
+        self._color = None
 
     def setMovementStrategy(self, pieceStrategy):
-        self.movementStrategy = pieceStrategy
+        self._movementStrategy = pieceStrategy
 
     def getSymbol(self):
-        if self.color == None:
+        if self._color == None:
             print("No color symbol found for piece " + str(self))
-        if self.color == "white":
-            return self.symbol.upper()
+        if self._color == "white":
+            return self._symbol.upper()
         else:
-            return self.symbol
+            return self._symbol
+    
+    def getColor(self):
+        return self._color
+    
+    def getPlayer(self):
+        return self._player
+
+    def getStrategy(self):
+        return self._movementStrategy
 
     @abstractmethod
     def clone(self):
@@ -35,9 +44,9 @@ class ChessPiecePrototype(ABC):
 class Pawn(ChessPiecePrototype):
     def __init__(self, player):
         super().__init__()
-        self.player = player
-        self.color = player.color
-        self.symbol = "p"
+        self._player = player
+        self._color = self._player.getColor()
+        self._symbol = "p"
         
         try:
             self.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonalForward, Strategy.DoubleForward])
@@ -50,9 +59,9 @@ class Pawn(ChessPiecePrototype):
 class Bishop(ChessPiecePrototype):
     def __init__(self, player):
         super().__init__()
-        self.player = player
-        self.color = player.color
-        self.symbol = "b"
+        self._player = player
+        self._color = player.getColor()
+        self._symbol = "b"
 
         try:
             self.setMovementStrategy([Strategy.MultipleDiagonal])
@@ -65,9 +74,9 @@ class Bishop(ChessPiecePrototype):
 class Knight(ChessPiecePrototype):
     def __init__(self, player):
         super().__init__()
-        self.player = player
-        self.color = player.color
-        self.symbol = "n"
+        self._player = player
+        self._color = player.getColor()
+        self._symbol = "n"
 
         try:
             self.setMovementStrategy([Strategy.TJump])
@@ -80,9 +89,9 @@ class Knight(ChessPiecePrototype):
 class Rook(ChessPiecePrototype):
     def __init__(self, player):
         super().__init__()
-        self.player = player
-        self.color = player.color
-        self.symbol = "r"
+        self._player = player
+        self._color = player.getColor()
+        self._symbol = "r"
         
         try:
             self.setMovementStrategy([Strategy.MultipleStraight])
@@ -95,9 +104,9 @@ class Rook(ChessPiecePrototype):
 class Queen(ChessPiecePrototype):
     def __init__(self, player):
         super().__init__()
-        self.player = player
-        self.color = player.color
-        self.symbol = "q"
+        self._player = player
+        self._color = player.getColor()
+        self._symbol = "q"
         
         try:
             self.setMovementStrategy([Strategy.MultipleStraight, Strategy.MultipleDiagonal])
@@ -110,9 +119,9 @@ class Queen(ChessPiecePrototype):
 class King(ChessPiecePrototype):
     def __init__(self, player):
         super().__init__()
-        self.player = player
-        self.color = player.color
-        self.symbol = "k"
+        self._player = player
+        self._color = player.getColor()
+        self._symbol = "k"
 
         try:
             self.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonal, Strategy.CastleKingside, Strategy.CastleQueenside])

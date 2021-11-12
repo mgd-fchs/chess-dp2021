@@ -1,6 +1,5 @@
 # Composite class
 import re
-
 from controllers.Player import Player, ActiveState, InactiveState
 from controllers.ChessBoard import ChessBoard
 from controllers.FenParser import FenParser
@@ -24,7 +23,7 @@ class Game:
         self.blackPlayer = Player("black")
         self.winner = None
 
-        self.activePlayer = None
+        self._activePlayer = None
         self.gameState = State.INIT
         self.gameString = fen
         self.board = None
@@ -63,7 +62,7 @@ class Game:
         if not piece:
             print("Cannot move piece from empty spot")
             return -1
-        player = piece.player
+        player = piece.getPlayer()
 
         if type(destinationSpot.getOccupant()) == King:
             takeKing = True
@@ -73,7 +72,7 @@ class Game:
         
         # check validity of move
         valid = False
-        for strategy in piece.movementStrategy:
+        for strategy in piece.getStrategy():
             valid = strategy.validateMove(self, originSpot, destinationSpot)
             if valid == True:
                 print("This is a valid move!")
@@ -95,10 +94,10 @@ class Game:
         return 0
 
     def executeCastle(self, castleType):
-        player = self.activePlayer
+        player = self._activePlayer
 
         if castleType == "q":
-            if player.color == "white":
+            if player.getColor() == "white":
                 originSpot = self.board[4][0]
                 destinationSpot = self.board[2][0]
                 rookOrigin = self.board[0][0]
@@ -108,7 +107,7 @@ class Game:
                     return -1
                 player.executeCastle(originSpot, destinationSpot, rookOrigin, rookDestination)
                 
-            if player.color == "black":
+            if player.getColor() == "black":
                 originSpot = self.board[4][7]
                 destinationSpot = self.board[2][7]
                 rookOrigin = self.board[0][7]
@@ -119,7 +118,7 @@ class Game:
                 player.executeCastle(originSpot, destinationSpot, rookOrigin, rookDestination)
 
         if castleType == "k":
-            if player.color == "white":
+            if player.getColor() == "white":
                 originSpot = self.board[4][0]
                 destinationSpot = self.board[6][0]
                 rookOrigin = self.board[7][0]
@@ -129,7 +128,7 @@ class Game:
                     return -1
                 player.executeCastle(originSpot, destinationSpot, rookOrigin, rookDestination)
 
-            if player.color == "black":
+            if player.getColor() == "black":
                 originSpot = self.board[4][7]
                 destinationSpot = self.board[6][7]
                 rookOrigin = self.board[7][7]
@@ -166,7 +165,7 @@ class Game:
                 print("Cannot promote to king!")
                 return
 
-            newOccupant = newFigure(self.activePlayer)
+            newOccupant = newFigure(self._activePlayer)
             
             print("...to " + str(type(newOccupant)))
             destinationSpot.occupyField(newOccupant)
@@ -226,9 +225,9 @@ class Game:
         if not piece:
             print("King is not in a position to castle!")
             return False
-            
+
         valid = False
-        for strategy in piece.movementStrategy:
+        for strategy in piece.getStrategy():
             valid = strategy.validateMove(self, originSpot, destinationSpot)
             if valid == True:
                 print("This is a valid move!")
@@ -241,7 +240,7 @@ class Game:
 
     def setWinner(self, shortColor, condition):
         print("Setting winner")
-        # TODO: Replace condition strings (?)
+
         if shortColor == "w":
             self.winner = "white"
         else: self.winner = "black"

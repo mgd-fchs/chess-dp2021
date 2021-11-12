@@ -18,18 +18,18 @@ class SingleForward(MovementStrategy):
             return validMove
         
         # check correct movement
-        if originSpot.getOccupant().color == "white":
+        if originSpot.getOccupant().getColor() == "white":
             if originSpot.getPosition()[1] == destinationSpot.getPosition()[1] - 1:
                 if originSpot.getPosition()[0] == destinationSpot.getPosition()[0]:
                     validMove = True
-        elif originSpot.getOccupant().color == "black":
+        elif originSpot.getOccupant().getColor() == "black":
             if originSpot.getPosition()[1] == destinationSpot.getPosition()[1] + 1:
                 if originSpot.getPosition()[0] == destinationSpot.getPosition()[0]:
                     validMove = True
 
         # cannot replace figures of same color
         if destinationSpot.getOccupant():
-            if destinationSpot.getOccupant().color == originSpot.getOccupant().color:
+            if destinationSpot.getOccupant().getColor() == originSpot.getOccupant().getColor():
                 validMove = False
         return validMove
 
@@ -53,7 +53,7 @@ class DoubleForward(MovementStrategy):
 
         xPos = originSpot.getPosition()[0]
 
-        if originSpot.getOccupant().color == "white":
+        if originSpot.getOccupant().getColor() == "white":
             if originSpot.getPosition()[1] == 1:
                 if destinationSpot.getPosition()[1] == 3:
                     # set en passant option
@@ -70,7 +70,6 @@ class DoubleForward(MovementStrategy):
 
 class MultipleStraight(MovementStrategy):
     # implemented by rook, queen
-    # TODO: Rework, queen movement is buggy
 
     # overwrite validateMove() method
     def validateMove(game, originSpot, destinationSpot):
@@ -97,6 +96,9 @@ class MultipleStraight(MovementStrategy):
             validMove = True
         
         elif originSpot.getPosition()[0] == destinationSpot.getPosition()[0]:
+            start = originSpot.getPosition()[1] + 1
+            end = destinationSpot.getPosition()[1]
+
             start = originSpot.getPosition()[1] + 1 
             end = destinationSpot.getPosition()[1]
             x_coordinate = originSpot.getPosition()[0]
@@ -109,7 +111,7 @@ class MultipleStraight(MovementStrategy):
 
         # cannot replace figures of same color
         if destinationSpot.getOccupant():
-            if destinationSpot.getOccupant().color == originSpot.getOccupant().color:
+            if destinationSpot.getOccupant().getColor() == originSpot.getOccupant().getColor():
                 validMove = False
         
         return validMove
@@ -117,7 +119,6 @@ class MultipleStraight(MovementStrategy):
 
 class MultipleDiagonal(MovementStrategy):
     # implemented by bishop, queen
-    # TODO: Rework, queen movement is buggy
     
     # overwrite validateMove() method
     def validateMove(game, originSpot, destinationSpot):
@@ -133,8 +134,14 @@ class MultipleDiagonal(MovementStrategy):
         # check correct movement
         if xDiff == yDiff:
             validMove = True
+            
+        xStart = originSpot.getPosition()[0] + 1
+        xEnd = destinationSpot.getPosition()[0]
 
-        for xPos in range(originSpot.getPosition()[0] + 1, destinationSpot.getPosition()[0]):
+        yStart = originSpot.getPosition()[1] + 1
+        yEnd = destinationSpot.getPosition()[1]
+
+        for xPos in range(xStart, xEnd):
             for yPos in range(originSpot.getPosition()[1] + 1, destinationSpot.getPosition()[1]):
                 if game.board[xPos][yPos].getOccupant():
                     validMove = False
@@ -142,7 +149,7 @@ class MultipleDiagonal(MovementStrategy):
 
         # cannot replace figures of same color
         if destinationSpot.getOccupant():
-            if destinationSpot.getOccupant().color == originSpot.getOccupant().color:
+            if destinationSpot.getOccupant().getColor() == originSpot.getOccupant().getColor():
                 validMove = False
 
         return validMove
@@ -167,7 +174,7 @@ class SingleDiagonal(MovementStrategy):
         
         # cannot replace figures of same color
         if destinationSpot.getOccupant():
-            if destinationSpot.getOccupant().color == originSpot.getOccupant().color:
+            if destinationSpot.getOccupant().getColor() == originSpot.getOccupant().getColor():
                 validMove = False
 
         return validMove
@@ -186,7 +193,7 @@ class SingleDiagonalForward(MovementStrategy):
         
         xDiff = abs(originSpot.getPosition()[0] - destinationSpot.getPosition()[0])
         yDiff = originSpot.getPosition()[1] - destinationSpot.getPosition()[1]
-        color = originSpot.getOccupant().color
+        color = originSpot.getOccupant().getColor()
 
         if xDiff == 1:
             if color == "white" and yDiff == -1:
@@ -212,7 +219,7 @@ class SingleDiagonalForward(MovementStrategy):
 
         # cannot replace figures of same color
         if destinationSpot.getOccupant():
-           if destinationSpot.getOccupant().color == originSpot.getOccupant().color:
+           if destinationSpot.getOccupant().getColor() == originSpot.getOccupant().getColor():
                validMove = False
 
         return validMove
@@ -241,7 +248,7 @@ class TJump(MovementStrategy):
 
         # cannot replace figures of same color
         if destinationSpot.getOccupant():
-            if destinationSpot.getOccupant().color == originSpot.getOccupant().color:
+            if destinationSpot.getOccupant().getColor() == originSpot.getOccupant().getColor():
                 validMove = False
         return validMove
 
@@ -258,16 +265,16 @@ class CastleQueenside(MovementStrategy):
             validMove = False
             return validMove, False
         
-        if game.activePlayer.queenCastle == True:
+        if game.getActivePlayer().queenCastle == True:
             print("Castling condition met")
             
-            if game.activePlayer.color == "white":
+            if game.getActivePlayer().getColor() == "white":
                 for i in range(1,4):
                     spot = game.board[i][0]
                     if not spot.getOccupant():
                         validMove = True
             
-            if game.activePlayer.color == "black":
+            if game.getActivePlayer().getColor() == "black":
                 for i in range(1,4):
                     spot = game.board[i][7]
                     if not spot.getOccupant():
@@ -288,16 +295,16 @@ class CastleKingside(MovementStrategy):
             validMove = False
             return validMove, False
 
-        if game.activePlayer.kingCastle == True:
+        if game.getActivePlayer().kingCastle == True:
             print("Castling condition met")
             
-            if game.activePlayer.color == "white":
+            if game.getActivePlayer().getColor() == "white":
                 for i in range(5,7): 
                     spot = game.board[i][0]
                     if not spot.getOccupant():
                         validMove = True
 
-            if game.activePlayer.color == "black":
+            if game.getActivePlayer().getColor() == "black":
                 for i in range(5,7): 
                     spot = game.board[i][7]
                     if not spot.getOccupant():

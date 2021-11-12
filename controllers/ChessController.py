@@ -11,7 +11,6 @@ from controllers.Game import Game
 from controllers.Gameplay import *
 db = SQLAlchemy()
 
-# TODO
 def index():
     print("index...")
     db.session.rollback()
@@ -21,7 +20,6 @@ def index():
                            fullmove_number=fullmove_number)
 
 
-# TODO
 def start_new_game():
     print("starting...")
     game_id, position, color, state, fullmove_number = init_new_game()
