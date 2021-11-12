@@ -8,116 +8,116 @@ from controllers.Strategy import MovementStrategy
 # common interface supports object cloning to decouple the code from the class of the method
 
 class ChessPiecePrototype(ABC):
-    def __init__(this):
-        this.player = None
-        this.symbol = None
-        this.movementStrategy = MovementStrategy()
-        this.color = None
+    def __init__(self):
+        self.player = None
+        self.symbol = None
+        self.movementStrategy = MovementStrategy()
+        self.color = None
 
-    def setMovementStrategy(this, pieceStrategy):
-        this.movementStrategy = pieceStrategy
+    def setMovementStrategy(self, pieceStrategy):
+        self.movementStrategy = pieceStrategy
 
-    def getSymbol(this):
-        if this.color == None:
-            print("No color symbol found for piece " + str(this))
-        if this.color == "white":
-            return this.symbol.upper()
+    def getSymbol(self):
+        if self.color == None:
+            print("No color symbol found for piece " + str(self))
+        if self.color == "white":
+            return self.symbol.upper()
         else:
-            return this.symbol
+            return self.symbol
 
     @abstractmethod
-    def clone(this):
+    def clone(self):
         pass
 
 # define differences for each type of figure
 # symbol dependent on colour of player
 
 class Pawn(ChessPiecePrototype):
-    def __init__(this, player):
+    def __init__(self, player):
         super().__init__()
-        this.player = player
-        this.color = player.color
-        this.symbol = "p"
+        self.player = player
+        self.color = player.color
+        self.symbol = "p"
         
         try:
-            this.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonalForward, Strategy.DoubleForward])
+            self.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonalForward, Strategy.DoubleForward])
         except AttributeError:
-            print("Movement strategy not found for " + str(this) + "!")
+            print("Movement strategy not found for " + str(self) + "!")
 
-    def clone(this):
-        return copy.deepcopy(this)
+    def clone(self):
+        return copy.deepcopy(self)
 
 class Bishop(ChessPiecePrototype):
-    def __init__(this, player):
+    def __init__(self, player):
         super().__init__()
-        this.player = player
-        this.color = player.color
-        this.symbol = "b"
+        self.player = player
+        self.color = player.color
+        self.symbol = "b"
 
         try:
-            this.setMovementStrategy([Strategy.MultipleDiagonal])
+            self.setMovementStrategy([Strategy.MultipleDiagonal])
         except AttributeError:
-            print("Movement strategy not found for " + str(this) + "!")
+            print("Movement strategy not found for " + str(self) + "!")
     
-    def clone(this):
-        return copy.deepcopy(this)
+    def clone(self):
+        return copy.deepcopy(self)
 
 class Knight(ChessPiecePrototype):
-    def __init__(this, player):
+    def __init__(self, player):
         super().__init__()
-        this.player = player
-        this.color = player.color
-        this.symbol = "n"
+        self.player = player
+        self.color = player.color
+        self.symbol = "n"
 
         try:
-            this.setMovementStrategy([Strategy.TJump])
+            self.setMovementStrategy([Strategy.TJump])
         except AttributeError:
-            print("Movement strategy not found for " + str(this) + "!")
+            print("Movement strategy not found for " + str(self) + "!")
     
-    def clone(this):
-        return copy.deepcopy(this)
+    def clone(self):
+        return copy.deepcopy(self)
 
 class Rook(ChessPiecePrototype):
-    def __init__(this, player):
+    def __init__(self, player):
         super().__init__()
-        this.player = player
-        this.color = player.color
-        this.symbol = "r"
+        self.player = player
+        self.color = player.color
+        self.symbol = "r"
         
         try:
-            this.setMovementStrategy([Strategy.MultipleStraight])
+            self.setMovementStrategy([Strategy.MultipleStraight])
         except AttributeError:
-            print("Movement strategy not found for " + str(this) + "!")        
+            print("Movement strategy not found for " + str(self) + "!")        
 
-    def clone(this):
-        return copy.deepcopy(this)
+    def clone(self):
+        return copy.deepcopy(self)
 
 class Queen(ChessPiecePrototype):
-    def __init__(this, player):
+    def __init__(self, player):
         super().__init__()
-        this.player = player
-        this.color = player.color
-        this.symbol = "q"
+        self.player = player
+        self.color = player.color
+        self.symbol = "q"
         
         try:
-            this.setMovementStrategy([Strategy.MultipleStraight, Strategy.MultipleDiagonal])
+            self.setMovementStrategy([Strategy.MultipleStraight, Strategy.MultipleDiagonal])
         except AttributeError:
-            print("Movement strategy not found for " + str(this) + "!")
+            print("Movement strategy not found for " + str(self) + "!")
 
-    def clone(this):
-        return copy.deepcopy(this)
+    def clone(self):
+        return copy.deepcopy(self)
 
 class King(ChessPiecePrototype):
-    def __init__(this, player):
+    def __init__(self, player):
         super().__init__()
-        this.player = player
-        this.color = player.color
-        this.symbol = "k"
+        self.player = player
+        self.color = player.color
+        self.symbol = "k"
 
         try:
-            this.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonal, Strategy.CastleKingside, Strategy.CastleQueenside])
+            self.setMovementStrategy([Strategy.SingleForward, Strategy.SingleDiagonal, Strategy.CastleKingside, Strategy.CastleQueenside])
         except AttributeError:
-            print("Movement strategy not found for " + str(this) + "!")
+            print("Movement strategy not found for " + str(self) + "!")
 
-    def clone(this):
-        return copy.deepcopy(this)
+    def clone(self):
+        return copy.deepcopy(self)

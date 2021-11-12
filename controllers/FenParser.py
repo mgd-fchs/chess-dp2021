@@ -1,5 +1,6 @@
 from controllers.ChessBoard import ChessBoard
 from controllers.Player import Player, ActiveState, InactiveState
+from controllers.ChessPiece import *
 import re
 
 class FenParser():
@@ -64,6 +65,7 @@ class FenParser():
     def parseMove(self, move):
 
         move = move.split()
+        switchFigure = None
 
         if len(move) < 2:
             print("Please enter a valid move! Parser takes input of length 2 or 3 but was: " + str(len(move)))
@@ -82,6 +84,7 @@ class FenParser():
             move_from = move[0]
             move_to = move[1]
             switch_to = move[2]
+            switchFigure = self.getFigureFromFen(switch_to)
 
         if move_from[0] != move_to[0]:
             print("Wrong input, must move the same figure. Input was:" + str(move_from) + " " + str(move_to) + ".")
@@ -126,7 +129,7 @@ class FenParser():
                 print("Wrong figure selected: " + originSpot.getOccupant().getSymbol())
                 return
         destinationSpot = self.game.board[int(move_to_row)-1][int(move_to_line)-1]
-        return (originSpot, destinationSpot)
+        return (originSpot, destinationSpot, switchFigure)
 
     def getFenString(self):
         lines = ""
@@ -228,3 +231,19 @@ class FenParser():
             self.game.blackPlayer.setKingCastle()
         if "q" in castleString:
             self.game.blackPlayer.setQueenCastle()
+
+    def getFigureFromFen(self, figureStr):
+        figureDict = {"p" : Pawn,
+                    "r" : Rook,
+                    "b" : Bishop,
+                    "n" : Knight,
+                    "q" : Queen,
+                    "k" : King}
+
+        if figureStr.lower() not in figureDict.keys():
+            print("No such figure exists: " + str(figureStr))
+            return
+        else:
+            figureType = figureDict[figureStr.lower()]
+
+        return figureType

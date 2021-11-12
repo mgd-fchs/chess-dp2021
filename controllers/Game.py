@@ -39,25 +39,28 @@ class Game:
     def move(self, move):
         # parse move
         try:
-            originSpot, destinationSpot = self.parseMove(move)
+            originSpot, destinationSpot, newFigure = self.parseMove(move)
         except TypeError:
             print("Error parsing move! Please check your input")
             return
+
+        moveMade = self.executeMove(originSpot, destinationSpot)
         
-        self.executeMove(originSpot, destinationSpot)
-    
-    # TODO: combine "move" and "executeMove"...beware interface changes!
+        if newFigure and (moveMade != -1):
+            self.promotePawn(destinationSpot, newFigure)
+
+        # TODO: Check if this can be done via state pattern only!
+        self.togglePlayer()
 
     def executeMove(self, originSpot, destinationSpot):
         piece = originSpot.getOccupant()
 
         if not piece:
             print("Cannot move piece from empty spot")
-            return
+            return -1
         player = piece.player
 
         if type(destinationSpot.getOccupant()) == King:
-            print("The king may be taken")
             takeKing = True
         else:
             print(str(destinationSpot.getOccupant()))
@@ -73,7 +76,7 @@ class Game:
 
         if valid == False:
             print("Please select a valid move!")
-            return
+            return -1
         
         # handle casteling
         if castleMove:
@@ -105,9 +108,32 @@ class Game:
         if type(piece) == King or type(piece) == Rook:
             self.toggleCastling(originSpot, piece)
 
-        # TODO: Check if this can be done via state pattern only!
-        self.togglePlayer()
 
+    def promotePawn(self, destinationSpot, newFigure):
+        validPromotion = False
+
+        if destinationSpot.getOccupant().color == "white":
+            if destinationSpot.getPosition()[1] == 7:
+                validPromotion = True
+        if destinationSpot.getOccupant().color == "black":
+            if destinationSpot.getPosition()[1] == 0:
+                validPromotion = True
+       
+        if validPromotion:
+            print("Promoting pawn...")
+
+            if type(newFigure) == Pawn:
+                print("Cannot promote to pawn!")
+                return
+            
+            if type(newFigure) == King:
+                print("Cannot promote to king!")
+                return
+
+            newOccupant = newFigure(self.activePlayer)
+            
+            print("...to " + str(type(newOccupant)))
+            destinationSpot.occupyField(newOccupant)
 
     def end(self):
         # to be called when a player wins or gives up
