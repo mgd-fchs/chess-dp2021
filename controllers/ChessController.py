@@ -1,27 +1,23 @@
 # Controller, link between user input and model
 # imports
-import sys
-from flask import render_template, redirect, url_for, request, abort, jsonify, app, session
-from flask import g
-from flask_sqlalchemy import SQLAlchemy
+from flask import render_template, request
+
 
 from controllers.Gameplay import *
 
 db = SQLAlchemy()
 
+
 def index():
     print("index...")
     db.session.rollback()
-    game_id, position, color, state, fullmove_number = init_new_game() # Gameplay function
-    fullmove_number = 1
-    return render_template('index.html', state=state, position=position, color=color, game_id=game_id,
-                           fullmove_number=fullmove_number)
+    return render_template('index.html')
 
 
 def start_new_game():
     print("starting...")
     game_id, position, color, state, fullmove_number = init_new_game()
-    return render_template('index.html', state=state, position=position, color=color, game_id=game_id,
+    return render_template('chess.html', state=state, position=position, color=color, game_id=game_id,
                            fullmove_number=fullmove_number)
 
 
@@ -31,7 +27,7 @@ def load_game():
 
     game_id, position, color, state, fullmove_number = load_saved_game(game_id)
 
-    return render_template('index.html', state=state, position=position,
+    return render_template('chess.html', state=state, position=position,
                            color=color, game_id=game_id, fullmove_number=fullmove_number)
 
 
@@ -41,7 +37,7 @@ def save_game():
 
     game_id, position, color, state, fullmove_number = save_game_by_id(game_id)
 
-    return render_template('index.html', state=state, position=position, color=color, game_id=game_id,
+    return render_template('chess.html', state=state, position=position, color=color, game_id=game_id,
                            fullmove_number=fullmove_number)
 
 
@@ -51,7 +47,7 @@ def undo():
 
     game_id, position, color, state, fullmove_number = undo_move(game_id)
 
-    return render_template('index.html', state=state, position=position, color=color, game_id=game_id,
+    return render_template('chess.html', state=state, position=position, color=color, game_id=game_id,
                            fullmove_number=fullmove_number)
 
 
@@ -61,7 +57,7 @@ def redo():
 
     game_id, position, color, state, fullmove_number = redo_move(game_id)
 
-    return render_template('index.html', state=state, position=position, color=color, game_id=game_id,
+    return render_template('chess.html', state=state, position=position, color=color, game_id=game_id,
                            fullmove_number=fullmove_number)
 
 
@@ -72,7 +68,7 @@ def move():
 
     game_id, position, color, state, fullmove_number, winner = moving(game_id, moving_input)
 
-    return render_template('index.html', state=state, position=position, color=color, game_id=game_id,
+    return render_template('chess.html', state=state, position=position, color=color, game_id=game_id,
                            fullmove_number=fullmove_number, winner=winner)
 
 
@@ -80,5 +76,5 @@ def give_up():
     game_id = request.form['game_id']
     game_id, state, position, color, fullmove_number, winner = give_up_end(game_id)
 
-    return render_template('index.html', state=state, position=position, color=color, game_id=game_id, 
+    return render_template('chess.html', state=state, position=position, color=color, game_id=game_id,
                             fullmove_number=fullmove_number, winner=winner )

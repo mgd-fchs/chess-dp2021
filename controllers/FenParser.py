@@ -2,9 +2,10 @@
 
 # imports
 from controllers.ChessBoard import ChessBoard
-from controllers.Player import Player, ActiveState, InactiveState
+from controllers.Player import ActiveState, InactiveState
 from controllers.ChessPiece import *
 import re
+
 
 class FenParser():
 
@@ -186,7 +187,6 @@ class FenParser():
         lines += " "
         lines += self.game.getActivePlayer().shortColor
 
-        # TODO
         # Add castling option
         castleStr = " "
         if self.game.whitePlayer.kingCastle == True:

@@ -1,7 +1,7 @@
 # Provide movement strategies to be implemented by ChessPiece
 
 # imports
-from abc import ABC, abstractmethod
+from abc import ABC
 
 
 class MovementStrategy(ABC):

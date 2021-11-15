@@ -1,5 +1,4 @@
 from flask_sqlalchemy import SQLAlchemy
-from models.Chess import db
 
 from models.Chess import Chess
 

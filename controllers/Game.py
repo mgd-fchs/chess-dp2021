@@ -1,19 +1,18 @@
 # Composite class to handle game state and actions
 
 # imports
-import re
 from enum import Enum
 
 from controllers.Player import Player, ActiveState, InactiveState
-from controllers.ChessBoard import ChessBoard
 from controllers.FenParser import FenParser
 from controllers.ChessPiece import *
-from models.Chess import Chess, db
+
 
 class State(Enum):
     INIT = 1
     PLAY = 2
     END = 3
+
 
 class Game:
 

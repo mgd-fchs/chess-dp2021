@@ -9,4 +9,4 @@ This project is an implementation of a chess game as a python web app created fo
 - run `flask db downgrade` - if something goes wrong, you can use this command to unapply changes you have done on your model file.
 
 ## Run the app
-Run app.py and then open http://127.0.0.1:5000/
+Run `python app.py` and then open [http://127.0.0.1:5000/](http://127.0.0.1:5000/)

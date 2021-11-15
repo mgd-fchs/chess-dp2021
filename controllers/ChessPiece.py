@@ -8,6 +8,7 @@ import copy
 import controllers.Strategy as Strategy
 from controllers.Strategy import MovementStrategy
 
+
 class ChessPiecePrototype(ABC):
     def __init__(self):
         self._player = None
@@ -39,9 +40,9 @@ class ChessPiecePrototype(ABC):
     def clone(self):
         pass
 
+
 # Define differences for each type of figure
 # Symbol dependent on colour of player
-
 class Pawn(ChessPiecePrototype):
     def __init__(self, player):
         super().__init__()
@@ -56,6 +57,7 @@ class Pawn(ChessPiecePrototype):
 
     def clone(self):
         return copy.deepcopy(self)
+
 
 class Bishop(ChessPiecePrototype):
     def __init__(self, player):
@@ -72,6 +74,7 @@ class Bishop(ChessPiecePrototype):
     def clone(self):
         return copy.deepcopy(self)
 
+
 class Knight(ChessPiecePrototype):
     def __init__(self, player):
         super().__init__()
@@ -86,6 +89,7 @@ class Knight(ChessPiecePrototype):
     
     def clone(self):
         return copy.deepcopy(self)
+
 
 class Rook(ChessPiecePrototype):
     def __init__(self, player):
@@ -102,6 +106,7 @@ class Rook(ChessPiecePrototype):
     def clone(self):
         return copy.deepcopy(self)
 
+
 class Queen(ChessPiecePrototype):
     def __init__(self, player):
         super().__init__()
@@ -116,6 +121,7 @@ class Queen(ChessPiecePrototype):
 
     def clone(self):
         return copy.deepcopy(self)
+
 
 class King(ChessPiecePrototype):
     def __init__(self, player):

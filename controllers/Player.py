@@ -3,6 +3,7 @@
 # imports
 from abc import ABC, abstractmethod
 
+
 class Player():
     _instances = []
 
@@ -48,7 +49,6 @@ class Player():
 
     def removeQueenCastle(self):
         self.queenCastle = True
-
 
 
 class State(ABC):

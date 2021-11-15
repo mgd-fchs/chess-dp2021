@@ -1,11 +1,7 @@
 # Provide linke between ChessController and Game
 
-import sys
-from flask import render_template, redirect, url_for, request, abort, jsonify, app, session
-from flask import g
 from flask_sqlalchemy import SQLAlchemy
 
-from controllers.Player import Player
 from models.Chess import Chess
 from controllers.Game import Game
 

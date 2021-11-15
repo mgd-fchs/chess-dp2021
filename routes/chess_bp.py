@@ -14,9 +14,3 @@ chess_bp.route('/redo', methods=['POST'])(redo)
 
 chess_bp.route('/move', methods=['POST'])(move)
 chess_bp.route('/give_up', methods=['POST'])(give_up)
-
-# add other routes
-# chess_bp.route('/create', methods=['POST'])(store)
-# chess_bp.route('/<int:user_id>', methods=['GET'])(show)
-# chess_bp.route('/<int:user_id>/edit', methods=['POST'])(update)
-# chess_bp.route('/<int:user_id>', methods=['DELETE'])(delete)

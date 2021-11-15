@@ -5,6 +5,7 @@
 import re
 from controllers import ChessPiece
 
+
 class ChessBoard:
     _positions = []
 
@@ -49,7 +50,7 @@ class ChessBoard:
                         chess_piece = ChessPiece.Pawn(color)
                     else:
                         return -1
-                    this._positions[7-row_number][7-line_number].occupyField(chess_piece)
+                    this._positions[7 - row_number][7 - line_number].occupyField(chess_piece)
 
                 else:
                     return -1
@@ -80,7 +81,7 @@ class BoardSpot():
         # getter function for coordinates        
         position = tuple((this._xPos, this._yPos))
         return position
-    
+
     def setPassant(this):
         this._passant = True
 
