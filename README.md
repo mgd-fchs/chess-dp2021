@@ -10,3 +10,6 @@ This project is an implementation of a chess game as a python web app created fo
 
 ## Run the app
 Run `python app.py` and then open [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
+
+### Hint
+You need an internet connection to run the frontend, because some libraries are loaded from cdn.
