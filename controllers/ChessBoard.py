@@ -1,8 +1,9 @@
 # Chess board class to set up initial state of the board and generate playable positions
+# Composite class
+
 # imports
 import re
 from controllers import ChessPiece
-
 
 class ChessBoard:
     _positions = []

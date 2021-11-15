@@ -1,3 +1,6 @@
+# Parser class to handle FEN string inputs and generate FEN strings for database storage
+
+# imports
 from controllers.ChessBoard import ChessBoard
 from controllers.Player import Player, ActiveState, InactiveState
 from controllers.ChessPiece import *
@@ -9,6 +12,8 @@ class FenParser():
         self.game = game
 
     def parseFenString(self, gameString):
+        # Obtain figure positions from a given FEN string
+
         params = gameString.split()
         if len(params) != 6:
             return -1
@@ -31,12 +36,14 @@ class FenParser():
             print("wrong player param")
             return -1
 
+        # Extract casteling option
         casteling = params[2]
         if not re.match("(^K?Q?k?q?$)|(^-$)", casteling):
             return -1
         else:
             self.setCastelingCondition(casteling)
 
+        # Extract en passant option
         en_passant = params[3]
         if not re.match("(^[a-h](3|6)$)|(^-$)", en_passant):
             return -1
@@ -62,6 +69,7 @@ class FenParser():
         
 
     def parseMove(self, move):
+        # Obtain move information based on player input
 
         move = move.split()
         switchFigure = None
@@ -144,6 +152,8 @@ class FenParser():
         return (originSpot, destinationSpot, switchFigure, castelingType)
 
     def getFenString(self):
+        # Obtain the FEN string from the current positions of all chess pieces
+
         lines = ""
         lineNumber = 0
         rowNumber = 0
@@ -222,6 +232,9 @@ class FenParser():
         return " " + xString + yString
 
     def getPositionFromFen(self, fenStr):
+        # obtain a figure's position from algebraic notation in FEN string
+        # used to parse en passant options
+
         alph = "abcdefgh"
         xPos = None
         yPos = None
@@ -235,6 +248,7 @@ class FenParser():
 
     def setCastelingCondition(self, castleString):
         # set castling parameters in player class
+
         if "K" in castleString:
             self.game.whitePlayer.setKingCastle()
         if "Q" in castleString:
@@ -245,6 +259,8 @@ class FenParser():
             self.game.blackPlayer.setQueenCastle()
 
     def getFigureFromFen(self, figureStr):
+        # obtain figure object from input FEN string
+        
         figureDict = {"p" : Pawn,
                     "r" : Rook,
                     "b" : Bishop,

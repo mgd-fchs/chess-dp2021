@@ -1,11 +1,12 @@
+# Prototype class to generate chess pieces from
+# Create the object at runtime by copying the prototype instance
+# Common interface supports object cloning to decouple the code from the class of the method
+
 # imports
 from abc import ABC, abstractmethod
 import copy
 import controllers.Strategy as Strategy
 from controllers.Strategy import MovementStrategy
-
-# create the object at runtime by copying the prototype instance
-# common interface supports object cloning to decouple the code from the class of the method
 
 class ChessPiecePrototype(ABC):
     def __init__(self):
@@ -38,8 +39,8 @@ class ChessPiecePrototype(ABC):
     def clone(self):
         pass
 
-# define differences for each type of figure
-# symbol dependent on colour of player
+# Define differences for each type of figure
+# Symbol dependent on colour of player
 
 class Pawn(ChessPiecePrototype):
     def __init__(self, player):

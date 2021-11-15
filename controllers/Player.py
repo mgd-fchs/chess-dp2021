@@ -1,3 +1,5 @@
+# Player class provides state-dependent behaviour
+
 # imports
 from abc import ABC, abstractmethod
 

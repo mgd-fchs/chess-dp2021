@@ -1,20 +1,18 @@
+# Controller, link between user input and model
+# imports
 import sys
 from flask import render_template, redirect, url_for, request, abort, jsonify, app, session
 from flask import g
-
-from controllers.Player import Player, ActiveState
-from models.Chess import Chess
-
 from flask_sqlalchemy import SQLAlchemy
 
-from controllers.Game import Game
 from controllers.Gameplay import *
+
 db = SQLAlchemy()
 
 def index():
     print("index...")
     db.session.rollback()
-    game_id, position, color, state, fullmove_number = init_new_game()
+    game_id, position, color, state, fullmove_number = init_new_game() # Gameplay function
     fullmove_number = 1
     return render_template('index.html', state=state, position=position, color=color, game_id=game_id,
                            fullmove_number=fullmove_number)

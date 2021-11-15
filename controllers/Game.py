@@ -1,14 +1,14 @@
-# Composite class
+# Composite class to handle game state and actions
+
+# imports
 import re
+from enum import Enum
+
 from controllers.Player import Player, ActiveState, InactiveState
 from controllers.ChessBoard import ChessBoard
 from controllers.FenParser import FenParser
 from controllers.ChessPiece import *
 from models.Chess import Chess, db
-
-
-from enum import Enum
-
 
 class State(Enum):
     INIT = 1
@@ -23,7 +23,7 @@ class Game:
         self.blackPlayer = Player("black")
         self.winner = None
 
-        self._activePlayer = None
+        self.activePlayer = None
         self.gameState = State.INIT
         self.gameString = fen
         self.board = None
@@ -94,7 +94,7 @@ class Game:
         return 0
 
     def executeCastle(self, castleType):
-        player = self._activePlayer
+        player = self.getActivePlayer()
 
         if castleType == "q":
             if player.getColor() == "white":
@@ -147,10 +147,10 @@ class Game:
 
         validPromotion = False
 
-        if destinationSpot.getOccupant().color == "white":
+        if destinationSpot.getOccupant().getColor() == "white":
             if destinationSpot.getPosition()[1] == 7:
                 validPromotion = True
-        if destinationSpot.getOccupant().color == "black":
+        if destinationSpot.getOccupant().getColor() == "black":
             if destinationSpot.getPosition()[1] == 0:
                 validPromotion = True
        
@@ -165,7 +165,7 @@ class Game:
                 print("Cannot promote to king!")
                 return
 
-            newOccupant = newFigure(self._activePlayer)
+            newOccupant = newFigure(self.getActivePlayer())
             
             print("...to " + str(type(newOccupant)))
             destinationSpot.occupyField(newOccupant)
@@ -196,7 +196,7 @@ class Game:
             self.whitePlayer.setState(InactiveState())
             self.fullmove_number += 1
 
-        print("It's " + self.activePlayer.color + "'s turn")
+        print("It's " + self.getActivePlayer().getColor() + "'s turn")
 
     def getActivePlayer(self):
         return self.activePlayer
